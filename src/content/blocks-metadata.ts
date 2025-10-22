@@ -1,3 +1,10 @@
+import {
+	IconClipboard,
+	IconCopy,
+	IconMail,
+	IconTerminal,
+} from "@tabler/icons-react";
+
 export const categoryIds = {
 	Clipboard: "clipboard",
 	// Add more categories as you expand
@@ -8,6 +15,7 @@ export interface BlockExample {
 	name: string;
 	description?: string;
 	iframeHeight?: string;
+	icon?: React.ComponentType<{ size?: number | string; className?: string }>;
 }
 
 export interface BlockMetadata {
@@ -15,6 +23,8 @@ export interface BlockMetadata {
 	category: string;
 	name: string;
 	description?: string;
+	image?: string;
+	icon?: React.ComponentType<{ size?: number | string; className?: string }>;
 	examples: BlockExample[];
 }
 
@@ -22,25 +32,23 @@ export const blocksMetadata: BlockMetadata[] = [
 	{
 		id: "clipboard",
 		category: categoryIds.Clipboard,
+
 		name: "Clipboard",
 		description:
 			"Copy to clipboard components with various styles and interactions.",
+		image: "/components/clipboard.png",
+		icon: IconCopy,
 		examples: [
 			{
 				id: "clipboard-01",
-				name: "Basic Clipboard",
-				description: "A simple clipboard button with tooltip feedback",
+				name: "Example",
+				description: "A simple clipboard component to copy a string",
 			},
 			{
 				id: "clipboard-02",
-				name: "Code Snippet Clipboard",
+				name: "Custom button",
 				description:
-					"Clipboard designed for code snippets and terminal commands",
-			},
-			{
-				id: "clipboard-03",
-				name: "Interactive Clipboard",
-				description: "Interactive demo with multiple copy options",
+					"You can use your own button as a child component for more control and styling abilities",
 			},
 		],
 	},

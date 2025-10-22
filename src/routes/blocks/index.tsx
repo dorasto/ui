@@ -46,24 +46,27 @@ function BlocksIndex() {
 								>
 									<div className="p-6 space-y-3">
 										<div className="flex items-start justify-between">
-											<h3 className="font-semibold text-lg group-hover:text-primary transition-colors">
+											<h3 className="font-semibold text-lg transition-colors flex items-center gap-2">
+												{block.icon && <block.icon className="h-4 w-4" />}
 												{block.name}
 											</h3>
-											<span className="text-xs text-muted-foreground capitalize px-2 py-1 rounded bg-muted">
+											<span className="text-xs text-primary-foreground capitalize px-2 py-1 rounded bg-primary">
 												{block.examples.length}{" "}
 												{block.examples.length === 1 ? "example" : "examples"}
 											</span>
 										</div>
+										{block.image && (
+											<img
+												src={block.image}
+												alt={block.name}
+												className="w-full p-3 bg-background rounded-lg"
+											/>
+										)}
 										{block.description && (
-											<p className="text-sm text-muted-foreground line-clamp-2">
+											<p className="text-sm line-clamp-2">
 												{block.description}
 											</p>
 										)}
-										<div className="pt-2">
-											<span className="text-sm text-primary group-hover:underline">
-												View Examples →
-											</span>
-										</div>
 									</div>
 								</Link>
 							))}

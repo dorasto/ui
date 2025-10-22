@@ -9,7 +9,9 @@ function RouteComponent() {
 	return (
 		<div>
 			<Header />
-			<Outlet />
+			<div className="container mx-auto py-8 px-4">
+				<Outlet />
+			</div>
 		</div>
 	);
 }

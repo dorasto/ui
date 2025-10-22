@@ -1,35 +1,68 @@
 "use client";
 
-import Clipboard from "@@/registry/clipboard/clipboard";
+import SimpleClipboard from "@@/registry/clipboard/clipboard";
+import { IconBrandNpm, IconBrandPnpm } from "@tabler/icons-react";
+import { useState } from "react";
+import BunIcon from "@/components/icons/bun";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function ClipboardDemo01() {
+	const installSnippet = {
+		npm: `npx shadcn@latest add`,
+		pnpm: `pnpm dlx shadcn@latest add`,
+		bun: `bunx --bun shadcn@latest add`,
+	};
+	const [activeInstallTab, setActiveInstallTab] = useState<string>("npm");
 	return (
 		<div className="flex min-h-screen items-center justify-center p-6">
-			<div className="w-full max-w-md space-y-6">
-				<div className="space-y-2 text-center">
-					<h2 className="text-2xl font-bold">Basic Clipboard</h2>
-					<p className="text-sm text-muted-foreground">
-						Click the button to copy text to your clipboard
-					</p>
-				</div>
-
-				<div className="flex justify-center gap-4">
-					<Clipboard
-						textToCopy="Hello, World!"
-						tooltipText="Copy to clipboard"
-						tooltipCopiedText="Copied!"
+			<Tabs
+				defaultValue="npm"
+				className="gap-0 bg-card rounded-lg w-full"
+				onValueChange={(value) => setActiveInstallTab(value)}
+			>
+				<div className="flex items-center pt-2 px-2">
+					<TabsList>
+						<TabsTrigger value="npm">
+							<IconBrandNpm />
+							npm
+						</TabsTrigger>
+						<TabsTrigger value="pnpm">
+							<IconBrandPnpm />
+							pnpm
+						</TabsTrigger>
+						<TabsTrigger value="bun">
+							<BunIcon stroke="currentColor" />
+							bun
+						</TabsTrigger>
+					</TabsList>
+					<SimpleClipboard
+						textToCopy={
+							installSnippet[activeInstallTab as keyof typeof installSnippet]
+						}
+						className="ml-auto rounded h-7 w-7 bg-secondary hover:bg-secondary/80"
 					/>
 				</div>
-
-				<div className="rounded-lg border bg-muted/50 p-4">
-					<p className="text-sm text-muted-foreground">
-						Text to copy:{" "}
-						<span className="font-mono font-semibold text-foreground">
-							Hello, World!
-						</span>
-					</p>
+				<div className="">
+					<TabsContent
+						value="npm"
+						className="text-muted-foreground rounded-lg p-3"
+					>
+						<code>{installSnippet.npm}</code>
+					</TabsContent>
+					<TabsContent
+						value="pnpm"
+						className="text-muted-foreground rounded-lg p-3"
+					>
+						<code>{installSnippet.pnpm}</code>
+					</TabsContent>
+					<TabsContent
+						value="bun"
+						className="text-muted-foreground rounded-lg p-3"
+					>
+						<code>{installSnippet.bun}</code>
+					</TabsContent>
 				</div>
-			</div>
+			</Tabs>
 		</div>
 	);
 }
