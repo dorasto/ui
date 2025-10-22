@@ -50,7 +50,8 @@ function BlocksIndex() {
 												{block.name}
 											</h3>
 											<span className="text-xs text-muted-foreground capitalize px-2 py-1 rounded bg-muted">
-												{block.type}
+												{block.examples.length}{" "}
+												{block.examples.length === 1 ? "example" : "examples"}
 											</span>
 										</div>
 										{block.description && (
@@ -60,7 +61,7 @@ function BlocksIndex() {
 										)}
 										<div className="pt-2">
 											<span className="text-sm text-primary group-hover:underline">
-												View Preview →
+												View Examples →
 											</span>
 										</div>
 									</div>

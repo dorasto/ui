@@ -21,7 +21,7 @@ export default function Header() {
 	>({});
 
 	return (
-		<header className="bg-card p-3">
+		<header className="bg-card p-3 sticky top-0">
 			<Link to="/">
 				<Button variant={"secondary"} className="cursor-pointer">
 					Latest UI

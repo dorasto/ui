@@ -1,6 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Code, ExternalLink, Eye } from "lucide-react";
-import Header from "@/components/Header";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { blocksMetadata } from "@/content/blocks-metadata";
@@ -29,7 +28,7 @@ function BlockPage() {
 				</Link>
 			</div>
 
-			<div className="space-y-6">
+			<div className="space-y-8">
 				<div className="space-y-3">
 					<div className="flex items-start justify-between">
 						<div className="space-y-1">
@@ -48,53 +47,57 @@ function BlockPage() {
 					</div>
 				</div>
 
-				<Tabs defaultValue="preview" className="w-full">
-					<TabsList className="grid w-full max-w-md grid-cols-2">
-						<TabsTrigger value="preview" className="gap-2">
-							<Eye className="h-4 w-4" />
-							Preview
-						</TabsTrigger>
-						<TabsTrigger value="code" className="gap-2">
-							<Code className="h-4 w-4" />
-							Code
-						</TabsTrigger>
-					</TabsList>
-
-					<TabsContent value="preview" className="mt-6">
-						<div className="rounded-lg border bg-card overflow-hidden">
-							<div className="border-b bg-muted/50 px-4 py-2 flex items-center justify-between">
-								<span className="text-sm font-medium">Preview</span>
-								<Button variant="ghost" size="sm" asChild className="h-8 gap-2">
-									<a
-										href={`/preview/${blockId}`}
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<ExternalLink className="h-3.5 w-3.5" />
-										Open in new tab
-									</a>
-								</Button>
+				{/* All examples mapped out */}
+				<div className="space-y-12">
+					{block.examples.map((example) => (
+						<div key={example.id} className="space-y-4">
+							<div className="space-y-2">
+								<h2 className="text-2xl font-semibold">{example.name}</h2>
+								{example.description && (
+									<p className="text-muted-foreground">{example.description}</p>
+								)}
 							</div>
-							<iframe
-								title={`preview-${blockId}`}
-								src={`/preview/${blockId}`}
-								className="w-full bg-background"
-								style={{ height: block.iframeHeight || "600px" }}
-							/>
+							<div className="rounded-lg border bg-card overflow-hidden">
+								<Tabs>
+									<TabsList>
+										<TabsTrigger value="preview">Preview</TabsTrigger>
+										<TabsTrigger value="code">Code</TabsTrigger>
+									</TabsList>
+									<TabsContent value="account">
+										Make changes to your account here.
+									</TabsContent>
+									<TabsContent value="password">
+										Change your password here.
+									</TabsContent>
+								</Tabs>
+								<div className="border-b bg-muted/50 px-4 py-2 flex items-center justify-between">
+									<span className="text-sm font-medium">Preview</span>
+									<Button
+										variant="ghost"
+										size="sm"
+										asChild
+										className="h-8 gap-2"
+									>
+										<a
+											href={`/preview/${example.id}`}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<ExternalLink className="h-3.5 w-3.5" />
+											Open in new tab
+										</a>
+									</Button>
+								</div>
+								<iframe
+									title={`preview-${example.id}`}
+									src={`/preview/${example.id}`}
+									className="w-full bg-background"
+									style={{ height: example.iframeHeight || "600px" }}
+								/>
+							</div>
 						</div>
-					</TabsContent>
-
-					<TabsContent value="code" className="mt-6">
-						<div className="rounded-lg border bg-muted/50 p-6">
-							<p className="text-sm text-muted-foreground">
-								Code view coming soon. For now, check the source at{" "}
-								<code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
-									content/components/{blockId}.tsx
-								</code>
-							</p>
-						</div>
-					</TabsContent>
-				</Tabs>
+					))}
+				</div>
 			</div>
 		</div>
 	);

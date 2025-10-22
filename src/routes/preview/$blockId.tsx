@@ -8,10 +8,20 @@ export const Route = createFileRoute("/preview/$blockId")({
 
 function BlockPreview() {
 	const { blockId } = Route.useParams();
-	const block = blocksMetadata.find((b) => b.id === blockId);
+
+	// Search for the example across all blocks
+	let foundExample = null;
+	for (const block of blocksMetadata) {
+		const example = block.examples.find((ex) => ex.id === blockId);
+		if (example) {
+			foundExample = example;
+			break;
+		}
+	}
+
 	const Component = blocksComponents[blockId];
 
-	if (!block || !Component) {
+	if (!foundExample || !Component) {
 		throw notFound();
 	}
 
@@ -19,5 +29,5 @@ function BlockPreview() {
 		<div className="min-h-screen w-full">
 			<Component />
 		</div>
-	)
+	);
 }
