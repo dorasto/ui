@@ -1,3 +1,4 @@
+import { SidebarScript } from "@@/registry/sidebar";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import {
@@ -40,8 +41,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<head>
+				<SidebarScript />
 				<HeadContent />
 			</head>
 			<body className="dark">
