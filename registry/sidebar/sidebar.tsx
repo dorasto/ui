@@ -32,7 +32,7 @@ export function useSidebar(id: string) {
 		toggle: (isMobile = false) => sidebarActions.toggleSidebar(id, isMobile),
 		setOpen: (open: boolean, isMobile = false) =>
 			sidebarActions.setOpen(id, open, isMobile),
-		setVariant: (variant: "default" | "floating" | "inset") =>
+		setVariant: (variant: "default" | "floating") =>
 			sidebarActions.setVariant(id, variant),
 	};
 }
@@ -41,7 +41,7 @@ export function useSidebar(id: string) {
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 	id: string;
 	side?: "left" | "right";
-	variant?: "default" | "floating" | "inset";
+	variant?: "default" | "floating";
 	collapsible?: boolean;
 	defaultOpen?: boolean;
 	width?: string;
@@ -137,17 +137,21 @@ export function Sidebar({
 		);
 	}
 
-	const baseStyles = "sticky top-0 h-screen overflow-hidden";
+	const baseStyles = "sticky top-0 h-full overflow-hidden transition-all";
+    	const variantRootStyles = {
+		default: "h-full",
+		floating: "m-3",
+	};
 	const variantStyles = {
-		default: "bg-sidebar border-sidebar-border border-r",
-		floating: "bg-sidebar border-sidebar-border m-2 rounded-lg border shadow-sm",
-		inset: "bg-sidebar border-sidebar-border m-2 rounded-lg border shadow-sm",
+		default: "bg-sidebar",
+		floating: "bg-sidebar rounded-lg border",
 	};
 
 	// Server: render skeleton with CSS variable only (no content)
 	// This prevents hydration mismatch because server doesn't know localStorage state
 	if (!isClient) {
 		return (
+            <div className={cn(variantRootStyles[variant])}>
 			<aside
 				data-sidebar-id={id}
 				data-variant={variant}
@@ -157,18 +161,20 @@ export function Sidebar({
 					minWidth: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})`,
 					maxWidth: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})`
 				}}
-				className={cn(baseStyles, variantStyles[variant], className)}
+				className={cn(baseStyles, variantStyles[variant], className, "animate-pulse border-inherit/5")}
 				{...props}
 			>
 				{/* Skeleton - no content on server */}
 				<div className="flex h-full flex-col overflow-hidden" style={{ width: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})` }} />
 			</aside>
+            </div>
 		);
 	}
 
 	// Client: render full sidebar with content
 	return (
 		<TooltipProvider delayDuration={0}>
+            <div className={cn(variantRootStyles[variant])}>
 			<aside
 				data-sidebar-id={id}
 				data-state={isOpen ? "expanded" : "collapsed"}
@@ -186,6 +192,7 @@ export function Sidebar({
 					{children}
 				</div>
 			</aside>
+            </div>
 		</TooltipProvider>
 	);
 }
