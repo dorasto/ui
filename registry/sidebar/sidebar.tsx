@@ -23,17 +23,36 @@ import { sidebarStore, sidebarActions } from "./sidebar-store";
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_COLLAPSED = "3.5rem";
 
+// Context for sidebar ID
+const SidebarContext = React.createContext<string | null>(null);
+
+// Hook to get sidebar ID from context
+function useSidebarId() {
+	const id = React.useContext(SidebarContext);
+	if (!id) {
+		throw new Error("Sidebar components must be used within a Sidebar component");
+	}
+	return id;
+}
+
 // Hook to use sidebar
-export function useSidebar(id: string) {
-	const sidebar = useStore(sidebarStore, (state) => state.sidebars[id]);
+export function useSidebar(id?: string) {
+	const contextId = React.useContext(SidebarContext);
+	const sidebarId = id ?? contextId;
+	
+	if (!sidebarId) {
+		throw new Error("useSidebar must be called with an id or within a Sidebar component");
+	}
+	
+	const sidebar = useStore(sidebarStore, (state) => state.sidebars[sidebarId]);
 
 	return {
 		sidebar,
-		toggle: (isMobile = false) => sidebarActions.toggleSidebar(id, isMobile),
+		toggle: (isMobile = false) => sidebarActions.toggleSidebar(sidebarId, isMobile),
 		setOpen: (open: boolean, isMobile = false) =>
-			sidebarActions.setOpen(id, open, isMobile),
+			sidebarActions.setOpen(sidebarId, open, isMobile),
 		setVariant: (variant: "default" | "floating") =>
-			sidebarActions.setVariant(id, variant),
+			sidebarActions.setVariant(sidebarId, variant),
 	};
 }
 
@@ -122,18 +141,20 @@ export function Sidebar({
 	// Mobile: show Sheet
 	if (isMobile) {
 		return (
-			<Sheet
-				open={sidebar ? sidebar.openMobile : false}
-				onOpenChange={(open) => sidebarActions.setOpen(id, open, true)}
-			>
-				<SheetContent side={side} className="w-[18rem] p-0">
-					<SheetHeader className="sr-only">
-						<SheetTitle>Navigation</SheetTitle>
-						<SheetDescription>Mobile navigation menu</SheetDescription>
-					</SheetHeader>
-					<div className="flex h-full flex-col">{children}</div>
-				</SheetContent>
-			</Sheet>
+			<SidebarContext.Provider value={id}>
+				<Sheet
+					open={sidebar ? sidebar.openMobile : false}
+					onOpenChange={(open) => sidebarActions.setOpen(id, open, true)}
+				>
+					<SheetContent side={side} className="w-[18rem] p-0">
+						<SheetHeader className="sr-only">
+							<SheetTitle>Navigation</SheetTitle>
+							<SheetDescription>Mobile navigation menu</SheetDescription>
+						</SheetHeader>
+						<div className="flex h-full flex-col">{children}</div>
+					</SheetContent>
+				</Sheet>
+			</SidebarContext.Provider>
 		);
 	}
 
@@ -173,27 +194,29 @@ export function Sidebar({
 
 	// Client: render full sidebar with content
 	return (
-		<TooltipProvider delayDuration={0}>
-            <div className={cn(variantRootStyles[variant])}>
-			<aside
-				data-sidebar-id={id}
-				data-state={isOpen ? "expanded" : "collapsed"}
-				data-variant={variant}
-				data-side={side}
-				style={{ 
-					width: `var(--sidebar-${id}-width, ${currentWidth})`,
-					minWidth: `var(--sidebar-${id}-width, ${currentWidth})`,
-					maxWidth: `var(--sidebar-${id}-width, ${currentWidth})`
-				}}
-				className={cn(baseStyles, variantStyles[variant], className)}
-				{...props}
-			>
-				<div className="flex h-full flex-col overflow-hidden" style={{ width: `var(--sidebar-${id}-width, ${currentWidth})` }}>
-					{children}
+		<SidebarContext.Provider value={id}>
+			<TooltipProvider delayDuration={0}>
+				<div className={cn(variantRootStyles[variant])}>
+					<aside
+						data-sidebar-id={id}
+						data-state={isOpen ? "expanded" : "collapsed"}
+						data-variant={variant}
+						data-side={side}
+						style={{ 
+							width: `var(--sidebar-${id}-width, ${currentWidth})`,
+							minWidth: `var(--sidebar-${id}-width, ${currentWidth})`,
+							maxWidth: `var(--sidebar-${id}-width, ${currentWidth})`
+						}}
+						className={cn(baseStyles, variantStyles[variant], className)}
+						{...props}
+					>
+						<div className="flex h-full flex-col overflow-hidden" style={{ width: `var(--sidebar-${id}-width, ${currentWidth})` }}>
+							{children}
+						</div>
+					</aside>
 				</div>
-			</aside>
-            </div>
-		</TooltipProvider>
+			</TooltipProvider>
+		</SidebarContext.Provider>
 	);
 }
 
@@ -204,7 +227,7 @@ export function SidebarHeader({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn("flex flex-col gap-2 border-b p-4", className)}
+			className={cn("flex flex-col gap-2 p-2", className)}
 			{...props}
 		/>
 	);
@@ -230,7 +253,7 @@ export function SidebarFooter({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn("mt-auto border-t p-4", className)}
+			className={cn("mt-auto border-t p-2", className)}
 			{...props}
 		/>
 	);
@@ -241,7 +264,7 @@ export function SidebarGroup({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-	return <div className={cn("flex flex-col gap-1 py-2", className)} {...props} />;
+	return <div className={cn("flex flex-col gap-2", className)} {...props} />;
 }
 
 // Sidebar Group Label
@@ -265,15 +288,57 @@ export function SidebarMenu({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLUListElement>) {
-	return <ul className={cn("flex flex-col gap-0.5", className)} {...props} />;
+	return <ul className={cn("flex flex-col gap-2", className)} {...props} />;
 }
 
 // Sidebar Menu Item
+interface SidebarMenuItemProps extends React.HTMLAttributes<HTMLLIElement> {
+    isActive?: boolean;
+    isCollapsed?: boolean;
+	showWhenCollapsed?: boolean;
+	hideWhenCollapsed?: boolean;
+}
+
 export function SidebarMenuItem({
 	className,
+    isActive,
+    isCollapsed,
+	showWhenCollapsed,
+	hideWhenCollapsed,
+	children,
 	...props
-}: React.HTMLAttributes<HTMLLIElement>) {
-	return <li className={cn("relative", className)} {...props} />;
+}: SidebarMenuItemProps) {
+	const { sidebar } = useSidebar();
+	const collapsed = sidebar && !sidebar.open;
+	
+	// Hide when collapsed if hideWhenCollapsed is true
+	if (hideWhenCollapsed && collapsed) return null;
+	
+	// Hide when expanded if showWhenCollapsed is true
+	if (showWhenCollapsed && !collapsed) return null;
+	
+	return <li className={cn("relative duration-150 flex w-full items-center gap-1 shrink-0 px-1",
+        "flex w-full items-center gap-3 text-sm transition-all justify-start text-left flex-1 group/item rounded-lg",
+
+				"hover:bg-accent hover:text-accent-foreground",
+				"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+				isActive && "bg-accent font-medium text-accent-foreground",
+                (isCollapsed || collapsed) && "justify-center aspect-square",
+				 className)} data-active={isActive} {...props}>{children}</li>;
+}
+
+// Sidebar Menu Sub
+export function SidebarMenuSub({
+	className,
+	children,
+	...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+	const { sidebar } = useSidebar();
+	const isCollapsed = sidebar && !sidebar.open;
+	
+	if (isCollapsed) return null;
+	
+	return <div className={cn("flex items-center gap-1 w-fit", className)} {...props}>{children}</div>;
 }
 
 // Sidebar Menu Button
@@ -281,7 +346,6 @@ interface SidebarMenuButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	isActive?: boolean;
 	tooltip?: string;
-	sidebarId: string;
 	asChild?: boolean;
 	icon?: React.ReactNode;
 }
@@ -289,13 +353,12 @@ interface SidebarMenuButtonProps
 export function SidebarMenuButton({
 	isActive,
 	tooltip,
-	sidebarId,
 	icon,
 	className,
 	children,
 	...props
 }: SidebarMenuButtonProps) {
-	const { sidebar } = useSidebar(sidebarId);
+	const { sidebar } = useSidebar();
 	const isCollapsed = sidebar && !sidebar.open;
 
 	const button = (
@@ -303,16 +366,20 @@ export function SidebarMenuButton({
 			type="button"
 			data-active={isActive}
 			className={cn(
-				"flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
-				"hover:bg-accent hover:text-accent-foreground",
-				"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+				"flex w-full items-center gap-3 text-sm duration-150 transition-all justify-start text-left flex-1 rounded-lg p-2",
+				"",
+				"focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent",
 				isActive && "bg-accent font-medium text-accent-foreground",
+                isCollapsed && "justify-center aspect-square",
 				className,
 			)}
 			{...props}
 		>
-			{icon && <span className="shrink-0">{icon}</span>}
-			{!isCollapsed && <span className="flex-1 truncate">{children}</span>}
+			{icon && <span className="[&>svg]:size-4 [&>svg]:shrink-0">{icon}</span>}
+            {children ? (
+                !isCollapsed && <span className="flex-1 truncate">{children}</span>
+            ) : null
+            }
 		</button>
 	);
 
@@ -332,21 +399,19 @@ export function SidebarMenuButton({
 interface SidebarSubmenuProps extends React.HTMLAttributes<HTMLDivElement> {
 	label: string;
 	icon?: React.ReactNode;
-	sidebarId: string;
 	defaultOpen?: boolean;
 }
 
 export function SidebarSubmenu({
 	label,
 	icon,
-	sidebarId,
 	defaultOpen = false,
 	className,
 	children,
 	...props
 }: SidebarSubmenuProps) {
 	const [isOpen, setIsOpen] = React.useState(defaultOpen);
-	const { sidebar } = useSidebar(sidebarId);
+	const { sidebar } = useSidebar();
 	const isCollapsed = sidebar && !sidebar.open;
 
 	const trigger = (
@@ -409,7 +474,7 @@ export function SidebarSubmenuItem({
 			className={cn(
 				"flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm transition-colors",
 				"hover:bg-accent hover:text-accent-foreground",
-				"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+				"focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent",
 				isActive && "bg-accent font-medium text-accent-foreground",
 				className,
 			)}
@@ -421,16 +486,11 @@ export function SidebarSubmenuItem({
 }
 
 // Sidebar Trigger
-interface SidebarTriggerProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	sidebarId: string;
-}
-
 export function SidebarTrigger({
-	sidebarId,
 	className,
 	...props
-}: SidebarTriggerProps) {
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+	const sidebarId = useSidebarId();
 	const [isMobile, setIsMobile] = React.useState(false);
 
 	React.useEffect(() => {
@@ -446,7 +506,7 @@ export function SidebarTrigger({
 		<Button
 			variant="ghost"
 			size="icon"
-			className={cn("h-8 w-8", className)}
+			className={cn("", className)}
 			onClick={() => sidebarActions.toggleSidebar(sidebarId, isMobile)}
 			{...props}
 		>

@@ -13,11 +13,8 @@ function RouteComponent() {
 	return (
 		<div className="flex h-dvh relative overflow-hidden">
 			<MainSidebar />
-
 			<div className="flex-1 overflow-auto">
-				<Header />
 				<div className="container mx-auto py-8 px-4">
-					<SidebarTrigger sidebarId="main-sidebar" />
 					<Outlet />
 				</div>
 			</div>

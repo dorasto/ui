@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/useUniqueElementIds: <explanation> */
 import {
 	Sidebar,
 	SidebarContent,

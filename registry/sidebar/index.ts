@@ -7,6 +7,7 @@ export {
 	SidebarGroup,
 	SidebarGroupLabel,
 	SidebarMenu,
+    SidebarMenuSub,
 	SidebarMenuItem,
 	SidebarMenuButton,
 	SidebarSubmenu,

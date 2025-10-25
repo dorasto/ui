@@ -76,7 +76,7 @@ export default function Clipboard({
 	) : (
 		<Button
         
-			className={cn("disabled:opacity-100", className)}
+			className={cn("disabled:opacity-100 relative", className)}
 			onClick={handleCopy}
 			aria-label={copied ? "Copied" : "Copy to clipboard"}
 			disabled={copied || disabled}
