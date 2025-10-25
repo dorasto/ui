@@ -14,7 +14,7 @@ import {
 	SidebarTrigger,
 } from "@@/registry/sidebar/sidebar";
 import { sidebarActions } from "@@/registry/sidebar/sidebar-store";
-import { IconCode, IconLayoutSidebar } from "@tabler/icons-react";
+import { IconBlocks, IconCode, IconLayoutSidebar } from "@tabler/icons-react";
 import {
 	BarChartIcon,
 	BellIcon,
@@ -57,6 +57,28 @@ export function MainSidebar() {
 					/>
 				</SidebarMenuItem>
 			</SidebarHeader>
+			<SidebarContent>
+				<SidebarGroup>
+					<SidebarMenu>
+						<SidebarMenuItem>
+							<SidebarMenuButton
+								icon={<IconBlocks />}
+								tooltip="Components"
+								onClick={() => setActivePage("home")}
+							>
+								Components
+							</SidebarMenuButton>
+						</SidebarMenuItem>
+						<SidebarMenuItem>
+							<SidebarMenuButton
+								icon={<UserIcon />}
+								tooltip="Profile"
+								onClick={() => setActivePage("profile")}
+							/>
+						</SidebarMenuItem>
+					</SidebarMenu>
+				</SidebarGroup>
+			</SidebarContent>
 		</Sidebar>
 	);
 }
