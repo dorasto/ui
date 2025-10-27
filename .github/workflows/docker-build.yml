@@ -64,4 +64,4 @@ jobs:
 
       - name: Trigger Coolify deployment
         run: |
-          curl --request GET '{{secrets.WS_URL}}' --header 'Authorization: Bearer ${{ secrets.WS_TOKEN }}'
+          curl --request GET '${{secrets.WS_URL}}' --header 'Authorization: Bearer ${{ secrets.WS_TOKEN }}'
