@@ -1,10 +1,14 @@
-## Overview
-A component for copying text to the clipboard with visual feedback and customization options.
-## Features
+import { CodeBlock } from "/src/components/ui/code-block.tsx"
+import { Label } from "/src/components/ui/label.tsx"
 
-- Visual feedback with icon transitions
-- Customizable appearance and behavior
-- Tooltip support
-- Error handling callbacks
+<div className="flex flex-col gap-3 w-full">
+<Label className="text-3xl font-bold">Features</Label>
+</div>
 
-## Usage
+- ✅ Visual feedback with icon transitions
+- ✅ Customizable appearance and behavior
+- ✅ Tooltip support
+- ✅ Error handling callbacks
+<div className="flex flex-col gap-3 w-full">
+<Label className="text-3xl font-bold">Usage</Label>
+<CodeBlock className="bg-card!" code={`<Clipboard textToCopy={"some string"}/>`} /></div>

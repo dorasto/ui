@@ -25,7 +25,15 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: "Doras UI",
+			},
+			{
+				description:
+					"Explore Doras UI, the ultimate shadcn component library for React and Next.js developers. Enhance your applications with our versatile UI components today!",
+			},
+			{
+				keywords:
+					"shadcn, react, nextjs, ui library, component library, Doras UI, application development",
 			},
 		],
 		links: [

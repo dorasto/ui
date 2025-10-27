@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "acme",
-  "homepage": "http://localhost:3000",
+  "homepage": "https://ui.doras.to",
   "items": [
   {
     "name": "clipboard",

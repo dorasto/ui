@@ -55,7 +55,8 @@ export const blocksMetadata: BlockMetadata[] = [
 			{
 				id: "clipboard-01",
 				name: "Example",
-				description: "A simple clipboard component to copy a string",
+				description:
+					"Code copy with tabs to select which code to copy. Turns into a dropdown on smaller screens.",
 			},
 			{
 				id: "clipboard-02",

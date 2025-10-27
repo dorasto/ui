@@ -49,8 +49,8 @@ export function MainSidebar() {
 		<Sidebar id={sidebarId} collapsible variant="floating" className="">
 			<SidebarHeader>
 				<SidebarMenuItem>
-					<SidebarMenuButton icon={<IconCode />} tooltip="TomUI">
-						TomUI
+					<SidebarMenuButton icon={<IconCode />} tooltip="Doras UI">
+						Doras UI
 					</SidebarMenuButton>
 					<SidebarMenuSub>
 						<SidebarMenuButton
@@ -152,9 +152,9 @@ export function MainSidebar() {
 						icon={<IconStack2 className="h-4 w-4" />}
 						forcePopup={true}
 					>
-						<Link to="https://doras.to?ref=uicomponentlibrary" target="_blank">
+						<a href="https://doras.to?ref=uicomponentlibrary">
 							<SidebarSubmenuItem>Doras.to</SidebarSubmenuItem>
-						</Link>
+						</a>
 					</SidebarSubmenu>
 				</SidebarMenuItem>
 			</SidebarFooter>

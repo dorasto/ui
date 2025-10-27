@@ -203,7 +203,7 @@ function BlockPage() {
 									<ResizablePanel defaultSize={0} minSize={0} />
 								</ResizablePanelGroup>
 							</TabsContent>
-							<TabsContent value="code" className="p-0">
+							<TabsContent value="code" className="p-0 bg-secondary">
 								{loadingCodes.has(firstExample.id) ? (
 									<div className="space-y-2">
 										<Skeleton className="h-4 w-full" />
@@ -376,7 +376,7 @@ function BlockPage() {
 												<ResizablePanel defaultSize={0} minSize={0} />
 											</ResizablePanelGroup>
 										</TabsContent>
-										<TabsContent value="code" className="p-0">
+										<TabsContent value="code" className="p-0 bg-secondary">
 											{loadingCodes.has(example.id) ? (
 												<div className="space-y-2">
 													<Skeleton className="h-4 w-full" />
