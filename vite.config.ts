@@ -18,6 +18,9 @@ const config = defineConfig({
     tanstackStart(),
     nitroV2Plugin({ 
       preset: 'bun',
+      rollupConfig: {
+        external: ['@vercel/og', 'satori'],
+      },
     }),
     mdx({
       remarkPlugins: [remarkGfm, remarkFrontmatter],
