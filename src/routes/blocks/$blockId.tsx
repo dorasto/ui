@@ -43,8 +43,9 @@ export const Route = createFileRoute("/blocks/$blockId")({
 		return {
 			meta: seo({
 				title: `${block.name} | Doras UI`,
-				description: `${block.description}${hasMultipleExamples ? ` Includes ${exampleCount} variants and examples.` : ""} Copy and paste this ${block.category} component into your React/TanStack Router project. Live preview, full source code, and installation instructions included.`,
+				description: `${block.description}${hasMultipleExamples ? ` Includes ${exampleCount} variants and examples.` : ""} Copy and paste this ${block.category} component into your React project. Live preview, full source code, and installation instructions included.`,
 				keywords: `${block.name.toLowerCase()}, ${block.category}, react ${block.name.toLowerCase()}, tanstack router ${block.name.toLowerCase()}, ${block.name.toLowerCase()} component, ${block.name.toLowerCase()} example, copy paste component, react ui component`,
+				image: `/og/blocks/${params.blockId}.png`,
 			}),
 		};
 	},

@@ -11,8 +11,9 @@ export const Route = createFileRoute("/blocks/")({
 		return {
 			meta: seo({
 				title: `Browse ${totalBlocks} UI Components | Doras UI Component Library`,
-				description: `Explore ${totalBlocks} professionally designed React components across ${categories.length} categories. Copy, paste, and customize UI blocks for TanStack Router. Includes sidebars, clipboards, forms, navigation, and more.`,
+				description: `Explore ${totalBlocks} professionally designed React components across ${categories.length} categories. Copy, paste, and customize UI blocks. Includes sidebars, clipboards, forms, navigation, and more.`,
 				keywords: `react components, ui blocks, ${categories.join(", ")}, component examples, tanstack router components, react ui library, code snippets, reusable components`,
+				image: "/og/blocks.png",
 			}),
 		};
 	},

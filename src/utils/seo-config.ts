@@ -9,7 +9,7 @@ export const SITE_CONFIG = {
 	name: "Doras UI",
 	url: "https://dorasui.com", // Update with your actual domain
 	description:
-		"Explore Doras UI, the ultimate shadcn component library for React and TanStack Router developers. Enhance your applications with our versatile UI components today!",
+		"Explore Doras UI, the ultimate shadcn component library for React. Enhance your applications with our versatile UI components today!",
 	ogImage: "/og-image.png", // Add your OG image path
 	twitterHandle: "@dorasui", // Update with your Twitter handle
 	author: "Doras UI Team",

@@ -13,9 +13,12 @@ import { Route as BlocksRouteRouteImport } from './routes/blocks/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlocksIndexRouteImport } from './routes/blocks/index'
 import { Route as PreviewBlockIdRouteImport } from './routes/preview/$blockId'
+import { Route as OgIndexDotpngRouteImport } from './routes/og/index[.]png'
+import { Route as OgBlocksDotpngRouteImport } from './routes/og/blocks[.]png'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as BlocksBlockIdRouteImport } from './routes/blocks/$blockId'
+import { Route as OgBlocksBlockIdDotpngRouteImport } from './routes/og/blocks/$blockId[.]png'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
@@ -48,6 +51,16 @@ const PreviewBlockIdRoute = PreviewBlockIdRouteImport.update({
   path: '/preview/$blockId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OgIndexDotpngRoute = OgIndexDotpngRouteImport.update({
+  id: '/og/index.png',
+  path: '/og/index.png',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OgBlocksDotpngRoute = OgBlocksDotpngRouteImport.update({
+  id: '/og/blocks.png',
+  path: '/og/blocks.png',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   id: '/demo/tanstack-query',
   path: '/demo/tanstack-query',
@@ -62,6 +75,11 @@ const BlocksBlockIdRoute = BlocksBlockIdRouteImport.update({
   id: '/$blockId',
   path: '/$blockId',
   getParentRoute: () => BlocksRouteRoute,
+} as any)
+const OgBlocksBlockIdDotpngRoute = OgBlocksBlockIdDotpngRouteImport.update({
+  id: '/og/blocks/$blockId.png',
+  path: '/og/blocks/$blockId.png',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
   id: '/demo/start/server-funcs',
@@ -125,6 +143,8 @@ export interface FileRoutesByFullPath {
   '/blocks/$blockId': typeof BlocksBlockIdRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/og/blocks.png': typeof OgBlocksDotpngRoute
+  '/og/index.png': typeof OgIndexDotpngRoute
   '/preview/$blockId': typeof PreviewBlockIdRoute
   '/blocks/': typeof BlocksIndexRoute
   '/blocks/preview/$blockId': typeof BlocksPreviewBlockIdRoute
@@ -134,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/og/blocks/$blockId.png': typeof OgBlocksBlockIdDotpngRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -144,6 +165,8 @@ export interface FileRoutesByTo {
   '/blocks/$blockId': typeof BlocksBlockIdRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/og/blocks.png': typeof OgBlocksDotpngRoute
+  '/og/index.png': typeof OgIndexDotpngRoute
   '/preview/$blockId': typeof PreviewBlockIdRoute
   '/blocks': typeof BlocksIndexRoute
   '/blocks/preview/$blockId': typeof BlocksPreviewBlockIdRoute
@@ -153,6 +176,7 @@ export interface FileRoutesByTo {
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/og/blocks/$blockId.png': typeof OgBlocksBlockIdDotpngRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -165,6 +189,8 @@ export interface FileRoutesById {
   '/blocks/$blockId': typeof BlocksBlockIdRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/og/blocks.png': typeof OgBlocksDotpngRoute
+  '/og/index.png': typeof OgIndexDotpngRoute
   '/preview/$blockId': typeof PreviewBlockIdRoute
   '/blocks/': typeof BlocksIndexRoute
   '/blocks/preview/$blockId': typeof BlocksPreviewBlockIdRoute
@@ -174,6 +200,7 @@ export interface FileRoutesById {
   '/demo/form/simple': typeof DemoFormSimpleRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/og/blocks/$blockId.png': typeof OgBlocksBlockIdDotpngRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -187,6 +214,8 @@ export interface FileRouteTypes {
     | '/blocks/$blockId'
     | '/demo/table'
     | '/demo/tanstack-query'
+    | '/og/blocks.png'
+    | '/og/index.png'
     | '/preview/$blockId'
     | '/blocks/'
     | '/blocks/preview/$blockId'
@@ -196,6 +225,7 @@ export interface FileRouteTypes {
     | '/demo/form/simple'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/og/blocks/$blockId.png'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
@@ -206,6 +236,8 @@ export interface FileRouteTypes {
     | '/blocks/$blockId'
     | '/demo/table'
     | '/demo/tanstack-query'
+    | '/og/blocks.png'
+    | '/og/index.png'
     | '/preview/$blockId'
     | '/blocks'
     | '/blocks/preview/$blockId'
@@ -215,6 +247,7 @@ export interface FileRouteTypes {
     | '/demo/form/simple'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/og/blocks/$blockId.png'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
@@ -226,6 +259,8 @@ export interface FileRouteTypes {
     | '/blocks/$blockId'
     | '/demo/table'
     | '/demo/tanstack-query'
+    | '/og/blocks.png'
+    | '/og/index.png'
     | '/preview/$blockId'
     | '/blocks/'
     | '/blocks/preview/$blockId'
@@ -235,6 +270,7 @@ export interface FileRouteTypes {
     | '/demo/form/simple'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/og/blocks/$blockId.png'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
@@ -246,6 +282,8 @@ export interface RootRouteChildren {
   BlocksRouteRoute: typeof BlocksRouteRouteWithChildren
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  OgBlocksDotpngRoute: typeof OgBlocksDotpngRoute
+  OgIndexDotpngRoute: typeof OgIndexDotpngRoute
   PreviewBlockIdRoute: typeof PreviewBlockIdRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
@@ -253,6 +291,7 @@ export interface RootRouteChildren {
   DemoFormSimpleRoute: typeof DemoFormSimpleRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
+  OgBlocksBlockIdDotpngRoute: typeof OgBlocksBlockIdDotpngRoute
   DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
   DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
   DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
@@ -289,6 +328,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PreviewBlockIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/og/index.png': {
+      id: '/og/index.png'
+      path: '/og/index.png'
+      fullPath: '/og/index.png'
+      preLoaderRoute: typeof OgIndexDotpngRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/og/blocks.png': {
+      id: '/og/blocks.png'
+      path: '/og/blocks.png'
+      fullPath: '/og/blocks.png'
+      preLoaderRoute: typeof OgBlocksDotpngRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/tanstack-query': {
       id: '/demo/tanstack-query'
       path: '/demo/tanstack-query'
@@ -309,6 +362,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/blocks/$blockId'
       preLoaderRoute: typeof BlocksBlockIdRouteImport
       parentRoute: typeof BlocksRouteRoute
+    }
+    '/og/blocks/$blockId.png': {
+      id: '/og/blocks/$blockId.png'
+      path: '/og/blocks/$blockId.png'
+      fullPath: '/og/blocks/$blockId.png'
+      preLoaderRoute: typeof OgBlocksBlockIdDotpngRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/demo/start/server-funcs': {
       id: '/demo/start/server-funcs'
@@ -411,6 +471,8 @@ const rootRouteChildren: RootRouteChildren = {
   BlocksRouteRoute: BlocksRouteRouteWithChildren,
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  OgBlocksDotpngRoute: OgBlocksDotpngRoute,
+  OgIndexDotpngRoute: OgIndexDotpngRoute,
   PreviewBlockIdRoute: PreviewBlockIdRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoApiTqTodosRoute: DemoApiTqTodosRoute,
@@ -418,6 +480,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoFormSimpleRoute: DemoFormSimpleRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
+  OgBlocksBlockIdDotpngRoute: OgBlocksBlockIdDotpngRoute,
   DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
   DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
   DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,

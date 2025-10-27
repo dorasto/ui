@@ -8,11 +8,12 @@ export const Route = createFileRoute("/")({
 	component: App,
 	head: () => ({
 		meta: seo({
-			title: "Doras UI - Beautiful React Component Library | TanStack Router",
+			title: "Doras UI - Beautiful React Component Library",
 			description:
-				"Discover Doras UI - A modern, accessible component library for React and TanStack Router. Copy, paste, and customize beautiful UI blocks for your next project. Built with TypeScript and Tailwind CSS.",
+				"Discover Doras UI - A modern, accessible component library for React. Copy, paste, and customize beautiful UI blocks for your next project. Built with TypeScript and Tailwind CSS.",
 			keywords:
 				"doras ui, react components, tanstack router, ui library, shadcn, component library, react ui blocks, copy paste components, tailwind css, typescript, accessible components, modern ui, web development, frontend, react ecosystem",
+			image: "/og/index.png",
 		}),
 	}),
 });
@@ -25,10 +26,10 @@ function App() {
 		<div className="container mx-auto py-20 px-4">
 			<div className="max-w-3xl mx-auto text-center space-y-8">
 				<div className="space-y-4">
-					<h1 className="text-5xl font-bold tracking-tight">Latest UI</h1>
+					<h1 className="text-5xl font-bold tracking-tight">Doras UI</h1>
 					<p className="text-xl text-muted-foreground">
 						A collection of beautiful, reusable component blocks built with
-						React and TanStack Router
+						React
 					</p>
 				</div>
 

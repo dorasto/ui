@@ -50,9 +50,15 @@ export function MainSidebar() {
 		<Sidebar id={sidebarId} collapsible variant="floating" className="">
 			<SidebarHeader>
 				<SidebarMenuItem>
-					<SidebarMenuButton icon={<OurIcon />} tooltip="Doras UI">
-						Doras UI
-					</SidebarMenuButton>
+					<Link to="/" className="w-full">
+						<SidebarMenuButton
+							size="large"
+							icon={<OurIcon />}
+							tooltip="Doras UI"
+						>
+							Doras UI
+						</SidebarMenuButton>
+					</Link>
 					<SidebarMenuSub>
 						<SidebarMenuButton
 							icon={<IconLayoutSidebar />}

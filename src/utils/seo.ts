@@ -63,7 +63,7 @@ export const seo = ({
 export const defaultSEO = {
 	title: "Doras UI - Beautiful React Component Library",
 	description:
-		"Explore Doras UI, the ultimate shadcn component library for React and TanStack Router developers. Enhance your applications with our versatile UI components today!",
+		"Explore Doras UI, the ultimate shadcn component library for React. Enhance your applications with our versatile UI components today!",
 	keywords:
 		"shadcn, react, tanstack router, ui library, component library, Doras UI, application development, react components, ui blocks, copy paste components",
 };

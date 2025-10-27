@@ -24,7 +24,7 @@ export default function Header() {
 		<header className="bg-card p-3 sticky top-0">
 			<Link to="/">
 				<Button variant={"secondary"} className="cursor-pointer">
-					Latest UI
+					Doras UI
 				</Button>
 			</Link>
 		</header>

@@ -8,7 +8,7 @@ export const Route = createFileRoute("/blocks")({
 		meta: seo({
 			title: "UI Components & Blocks | Doras UI",
 			description:
-				"Browse our collection of beautiful, production-ready React components for TanStack Router. Copy, paste, and customize UI blocks for your projects.",
+				"Browse our collection of beautiful, production-ready React components. Copy, paste, and customize UI blocks for your projects.",
 			keywords:
 				"ui components, react blocks, component library, tanstack router, shadcn, ui design, web components",
 		}),
