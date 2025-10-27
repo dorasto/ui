@@ -21,6 +21,9 @@ WORKDIR /app
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package.json ./package.json
 
+# Install production dependencies only
+RUN bun install --production --frozen-lockfile
+
 # Set production environment
 ENV NODE_ENV=production
 
