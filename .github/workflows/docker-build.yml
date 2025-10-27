@@ -61,3 +61,7 @@ jobs:
             CACHEBUST=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Trigger Coolify deployment
+        run: |
+          curl --request GET '{{secrets.WS_URL}}' --header 'Authorization: Bearer ${{ secrets.WS_TOKEN }}'
