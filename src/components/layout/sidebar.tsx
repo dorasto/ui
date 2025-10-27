@@ -32,6 +32,7 @@ import {
 import { blocksMetadata } from "@/content/blocks-metadata";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import OurIcon from "../icons/ouricon";
 export function MainSidebar() {
 	const sidebarId = "main-sidebar";
 	const isMobile = useIsMobile();
@@ -49,7 +50,7 @@ export function MainSidebar() {
 		<Sidebar id={sidebarId} collapsible variant="floating" className="">
 			<SidebarHeader>
 				<SidebarMenuItem>
-					<SidebarMenuButton icon={<IconCode />} tooltip="Doras UI">
+					<SidebarMenuButton icon={<OurIcon />} tooltip="Doras UI">
 						Doras UI
 					</SidebarMenuButton>
 					<SidebarMenuSub>

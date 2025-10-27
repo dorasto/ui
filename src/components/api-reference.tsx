@@ -35,20 +35,21 @@ export function ApiReference({
 			<div className="bg-card p-3 rounded-lg">
 				{subtitle && <h3 className="text-xl font-semibold mt-2">{subtitle}</h3>}
 				<p className="text-muted-foreground mt-1">
-					Contains all {subtitle.toLowerCase()} functionality. * indicates it's
-					required.
+					Contains all {subtitle.toLowerCase()} functionality.
 				</p>
-				<Table>
+				<Table className="bg-accent overflow-hidden relative rounded-lg">
 					<TableHeader className="w-fit">
-						<TableRow className="w-fit">
-							<TableHead className="w-fit">Prop</TableHead>
-							<TableHead className="w-fit">Type</TableHead>
-							<TableHead className="w-fit">Default</TableHead>
+						<TableRow className="w-fit bg-secondary">
+							<TableHead className="w-fit font-bold text-base">Prop</TableHead>
+							<TableHead className="w-fit font-bold text-base">Type</TableHead>
+							<TableHead className="w-fit font-bold text-base">
+								Default
+							</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody className="w-fit">
 						{props.map((prop) => (
-							<TableRow key={prop.name} className="w-fit">
+							<TableRow key={prop.name} className="w-fit bg-popover">
 								<TableCell className="flex items-center gap-3 w-fit">
 									<code className="bg-primary/50 p-1 rounded text-base w-fit">
 										{prop.name}
@@ -59,15 +60,25 @@ export function ApiReference({
 											<TooltipTrigger>
 												<IconInfoCircle className="size-4" />
 											</TooltipTrigger>
-											<TooltipContent>{prop.description}</TooltipContent>
+											<TooltipContent className="text-base border">
+												{prop.description}
+											</TooltipContent>
 										</Tooltip>
 									)}
 								</TableCell>
 								<TableCell className="w-fit">
-									<code>{prop.type}</code>
+									<code className="bg-accent p-1 rounded text-base w-fit">
+										{prop.type}
+									</code>
 								</TableCell>
 								<TableCell className="w-fit">
-									{prop.defaultValue ? <code>{prop.defaultValue}</code> : "-"}
+									{prop.defaultValue ? (
+										<code className="bg-accent p-1 rounded text-base w-fit">
+											{prop.defaultValue}
+										</code>
+									) : (
+										"-"
+									)}
 								</TableCell>
 							</TableRow>
 						))}
