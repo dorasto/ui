@@ -2,8 +2,20 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { blocksMetadata } from "@/content/blocks-metadata";
+import { seo } from "@/utils/seo";
 
-export const Route = createFileRoute("/")({ component: App });
+export const Route = createFileRoute("/")({
+	component: App,
+	head: () => ({
+		meta: seo({
+			title: "Doras UI - Beautiful React Component Library | TanStack Router",
+			description:
+				"Discover Doras UI - A modern, accessible component library for React and TanStack Router. Copy, paste, and customize beautiful UI blocks for your next project. Built with TypeScript and Tailwind CSS.",
+			keywords:
+				"doras ui, react components, tanstack router, ui library, shadcn, component library, react ui blocks, copy paste components, tailwind css, typescript, accessible components, modern ui, web development, frontend, react ecosystem",
+		}),
+	}),
+});
 
 function App() {
 	const totalBlocks = blocksMetadata.length;

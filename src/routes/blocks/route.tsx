@@ -1,12 +1,18 @@
-import { SidebarTrigger } from "@@/registry/sidebar/sidebar";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import Header from "@/components/Header";
 import { MainSidebar } from "@/components/layout/sidebar";
-import { SidebarExample } from "@/content/components/sidebar-example";
-import { MultipleSidebarsExample } from "@/content/components/sidebar-multiple";
+import { seo } from "@/utils/seo";
 
 export const Route = createFileRoute("/blocks")({
 	component: RouteComponent,
+	head: () => ({
+		meta: seo({
+			title: "UI Components & Blocks | Doras UI",
+			description:
+				"Browse our collection of beautiful, production-ready React components for TanStack Router. Copy, paste, and customize UI blocks for your projects.",
+			keywords:
+				"ui components, react blocks, component library, tanstack router, shadcn, ui design, web components",
+		}),
+	}),
 });
 
 function RouteComponent() {

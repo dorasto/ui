@@ -19,9 +19,35 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { blocksMetadata } from "@/content/blocks-metadata";
 import { getBlockDocs, getExampleCode } from "@/lib/code-loader";
+import { seo } from "@/utils/seo";
 
 export const Route = createFileRoute("/blocks/$blockId")({
 	component: BlockPage,
+	head: ({ params }) => {
+		const block = blocksMetadata.find((b) => b.id === params.blockId);
+
+		if (!block) {
+			return {
+				meta: seo({
+					title: "Block Not Found | Doras UI",
+					description:
+						"The requested component block was not found. Browse our full collection of React components.",
+					keywords: "doras ui, react components, component library",
+				}),
+			};
+		}
+
+		const exampleCount = block.examples?.length || 0;
+		const hasMultipleExamples = exampleCount > 1;
+
+		return {
+			meta: seo({
+				title: `${block.name} | Doras UI`,
+				description: `${block.description}${hasMultipleExamples ? ` Includes ${exampleCount} variants and examples.` : ""} Copy and paste this ${block.category} component into your React/TanStack Router project. Live preview, full source code, and installation instructions included.`,
+				keywords: `${block.name.toLowerCase()}, ${block.category}, react ${block.name.toLowerCase()}, tanstack router ${block.name.toLowerCase()}, ${block.name.toLowerCase()} component, ${block.name.toLowerCase()} example, copy paste component, react ui component`,
+			}),
+		};
+	},
 });
 
 function BlockPage() {

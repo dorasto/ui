@@ -9,6 +9,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
+import { defaultSEO, seo } from "../utils/seo";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
@@ -24,17 +25,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				name: "viewport",
 				content: "width=device-width, initial-scale=1",
 			},
-			{
-				title: "Doras UI",
-			},
-			{
-				description:
-					"Explore Doras UI, the ultimate shadcn component library for React and Next.js developers. Enhance your applications with our versatile UI components today!",
-			},
-			{
-				keywords:
-					"shadcn, react, nextjs, ui library, component library, Doras UI, application development",
-			},
+			...seo({
+				title: defaultSEO.title,
+				description: defaultSEO.description,
+				keywords: defaultSEO.keywords,
+			}),
 		],
 		links: [
 			{
