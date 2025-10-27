@@ -18,7 +18,14 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import { sidebarStore, sidebarActions } from "./sidebar-store";
+import { Skeleton } from "@/components/ui/skeleton";
+import { IconChevronRight } from "@tabler/icons-react";
 
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_COLLAPSED = "3.5rem";
@@ -182,11 +189,17 @@ export function Sidebar({
 					minWidth: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})`,
 					maxWidth: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})`
 				}}
-				className={cn(baseStyles, variantStyles[variant], className, "animate-pulse border-inherit/5")}
+				className={cn(baseStyles, variantStyles[variant], className, "animate-pulse border-transparent")}
 				{...props}
 			>
 				{/* Skeleton - no content on server */}
-				<div className="flex h-full flex-col overflow-hidden" style={{ width: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})` }} />
+				<div className="flex h-full flex-col overflow-hidden" style={{ width: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})` }} >
+                    <div className="flex flex-col gap-0.5 p-2">
+                    <Skeleton className="w-full h-9 opacity-10"/>
+                     <Skeleton className="w-full h-9 opacity-10"/>
+                      <Skeleton className="w-full h-9 opacity-10"/>
+                    </div>
+                </div>
 			</aside>
             </div>
 		);
@@ -227,7 +240,7 @@ export function SidebarHeader({
 }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn("flex flex-col gap-2 p-2", className)}
+			className={cn("flex flex-col gap-0.5 p-2", className)}
 			{...props}
 		/>
 	);
@@ -264,7 +277,7 @@ export function SidebarGroup({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-	return <div className={cn("flex flex-col gap-2", className)} {...props} />;
+	return <div className={cn("flex flex-col gap-0.5", className)} {...props} />;
 }
 
 // Sidebar Group Label
@@ -288,7 +301,7 @@ export function SidebarMenu({
 	className,
 	...props
 }: React.HTMLAttributes<HTMLUListElement>) {
-	return <ul className={cn("flex flex-col gap-2", className)} {...props} />;
+	return <ul className={cn("flex flex-col 0.5", className)} {...props} />;
 }
 
 // Sidebar Menu Item
@@ -318,12 +331,13 @@ export function SidebarMenuItem({
 	if (showWhenCollapsed && !collapsed) return null;
 	
 	return <li className={cn("relative duration-150 flex w-full items-center gap-1 shrink-0 px-1",
-        "flex w-full items-center gap-3 text-sm transition-all justify-start text-left flex-1 group/item rounded-lg",
+        "flex w-full items-center gap-3 transition-all justify-start text-left flex-1 group/item rounded-lg text-sm",
 
 				"hover:bg-accent hover:text-accent-foreground",
 				"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
 				isActive && "bg-accent font-medium text-accent-foreground",
                 (isCollapsed || collapsed) && "justify-center aspect-square",
+                
 				 className)} data-active={isActive} {...props}>{children}</li>;
 }
 
@@ -348,6 +362,7 @@ interface SidebarMenuButtonProps
 	tooltip?: string;
 	asChild?: boolean;
 	icon?: React.ReactNode;
+    size?: "default" | "large";
 }
 
 export function SidebarMenuButton({
@@ -356,6 +371,7 @@ export function SidebarMenuButton({
 	icon,
 	className,
 	children,
+    size,
 	...props
 }: SidebarMenuButtonProps) {
 	const { sidebar } = useSidebar();
@@ -366,16 +382,17 @@ export function SidebarMenuButton({
 			type="button"
 			data-active={isActive}
 			className={cn(
-				"flex w-full items-center gap-3 text-sm duration-150 transition-all justify-start text-left flex-1 rounded-lg p-2",
+				"flex w-full items-center gap-3 text-inherit duration-150 transition-all justify-start text-left flex-1 rounded-lg p-2",
 				"",
 				"focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent",
+                size === "large" && "font-semibold py-3",
 				isActive && "bg-accent font-medium text-accent-foreground",
                 isCollapsed && "justify-center aspect-square",
 				className,
 			)}
 			{...props}
 		>
-			{icon && <span className="[&>svg]:size-4 [&>svg]:shrink-0">{icon}</span>}
+			{icon && <span className={cn("[&>svg]:size-4 [&>svg]:shrink-0")}>{icon}</span>}
             {children ? (
                 !isCollapsed && <span className="flex-1 truncate">{children}</span>
             ) : null
@@ -400,6 +417,7 @@ interface SidebarSubmenuProps extends React.HTMLAttributes<HTMLDivElement> {
 	label: string;
 	icon?: React.ReactNode;
 	defaultOpen?: boolean;
+    forcePopup?: boolean;
 }
 
 export function SidebarSubmenu({
@@ -408,6 +426,7 @@ export function SidebarSubmenu({
 	defaultOpen = false,
 	className,
 	children,
+    forcePopup = false,
 	...props
 }: SidebarSubmenuProps) {
 	const [isOpen, setIsOpen] = React.useState(defaultOpen);
@@ -417,42 +436,63 @@ export function SidebarSubmenu({
 	const trigger = (
 		<button
 			type="button"
-			onClick={() => setIsOpen(!isOpen)}
+			onClick={() => !isCollapsed && setIsOpen(!isOpen)}
 			className={cn(
-				"flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
-				"hover:bg-accent hover:text-accent-foreground",
-				"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+				"flex w-full min-w-full items-center gap-3 text-inherit duration-150 transition-all justify-start text-left flex-1 rounded-lg p-2",
+				"hover:bg-accent hover:font-medium hover:text-accent-foreground",
+				"focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent",
+                !isCollapsed && isOpen && "bg-accent font-medium text-accent-foreground"
 			)}
 		>
-			{icon && <span className="shrink-0">{icon}</span>}
+			{icon && <span className={cn("shrink-0", "[&>svg]:size-4")}>{icon}</span>}
 			{!isCollapsed && (
 				<>
 					<span className="flex-1 truncate text-left">{label}</span>
-					<ChevronDownIcon
+                    <IconChevronRight
 						className={cn(
-							"h-4 w-4 transition-transform",
-							isOpen && "rotate-180",
+						"transition-all size-4",
+						isOpen ? "rotate-90 transition-all" : "",
 						)}
-					/>
+						/>
 				</>
 			)}
 		</button>
 	);
 
-	if (isCollapsed) {
+	if (forcePopup) {
 		return (
-			<Tooltip>
-				<TooltipTrigger asChild>{trigger}</TooltipTrigger>
+			<Popover>
+                {isCollapsed ? (
+                    <Tooltip>
+				<TooltipTrigger asChild><PopoverTrigger asChild>
+					{trigger}
+				</PopoverTrigger></TooltipTrigger>
 				<TooltipContent side="right">{label}</TooltipContent>
 			</Tooltip>
+                ): (
+                    <PopoverTrigger asChild>
+					{trigger}
+				</PopoverTrigger>
+                )}
+                
+				
+				<PopoverContent side="right" align="start" className="w-48 p-0">
+					<div className="flex flex-col gap-0.5">
+						<div className="p-3 text-sm font-semibold border-b flex items-center gap-2">{icon && <span className={cn("shrink-0", "[&>svg]:size-4")}>{icon}</span>}{label}</div>
+                        <div className="flex flex-col gap-0.5 p-1">
+						{children}
+                        </div>
+					</div>
+				</PopoverContent>
+			</Popover>
 		);
 	}
 
 	return (
-		<div className={className} {...props}>
+		<div className={cn("w-full",className)} {...props}>
 			{trigger}
 			{isOpen && (
-				<div className="ml-6 mt-1 flex flex-col gap-0.5 border-l pl-3">
+				<div className="ml-3 mt-1 flex flex-col gap-0.5 border-l pl-3">
 					{children}
 				</div>
 			)}

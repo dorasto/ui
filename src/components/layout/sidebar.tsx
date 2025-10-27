@@ -1,19 +1,24 @@
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarMenuSub,
+	SidebarSubmenu,
+	SidebarSubmenuItem,
 } from "@@/registry/sidebar/sidebar";
 import { sidebarActions } from "@@/registry/sidebar/sidebar-store";
 import {
 	IconBlocks,
+	IconBrandGithub,
 	IconChevronRight,
 	IconCode,
 	IconLayoutSidebar,
+	IconStack2,
 } from "@tabler/icons-react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { ChevronDown, UserIcon } from "lucide-react";
@@ -28,7 +33,6 @@ import { blocksMetadata } from "@/content/blocks-metadata";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 export function MainSidebar() {
-	const [componentsOpen, setComponentsOpen] = React.useState(false);
 	const sidebarId = "main-sidebar";
 	const isMobile = useIsMobile();
 
@@ -37,6 +41,9 @@ export function MainSidebar() {
 
 	// Check if we're on the blocks page or any block detail page
 	const isBlocksActive = pathname.startsWith("/blocks");
+
+	// Initialize collapsible state based on route, but allow user to toggle freely
+	const [componentsOpen, setComponentsOpen] = React.useState(isBlocksActive);
 
 	return (
 		<Sidebar id={sidebarId} collapsible variant="floating" className="">
@@ -68,11 +75,15 @@ export function MainSidebar() {
 						<Collapsible
 							open={componentsOpen}
 							onOpenChange={setComponentsOpen}
-							className="flex flex-col gap-2"
+							className="flex flex-col gap-0.5"
 						>
 							<SidebarMenuItem isActive={pathname === "/blocks"}>
 								<Link to="/blocks" className="w-full">
-									<SidebarMenuButton icon={<IconBlocks />} tooltip="Components">
+									<SidebarMenuButton
+										icon={<IconBlocks />}
+										tooltip="Components"
+										size="large"
+									>
 										Components
 									</SidebarMenuButton>
 								</Link>
@@ -98,7 +109,11 @@ export function MainSidebar() {
 									const isActive = pathname === `/blocks/${block.id}`;
 
 									return (
-										<SidebarMenuItem key={block.id} isActive={isActive}>
+										<SidebarMenuItem
+											key={block.id}
+											isActive={isActive}
+											hideWhenCollapsed
+										>
 											<Link
 												to="/blocks/$blockId"
 												className="w-full"
@@ -123,6 +138,26 @@ export function MainSidebar() {
 					</SidebarMenu>
 				</SidebarGroup>
 			</SidebarContent>
+			<SidebarFooter>
+				<Link to="/">
+					<SidebarMenuItem>
+						<SidebarMenuButton icon={<IconBrandGithub />} tooltip="GitHub">
+							GitHub
+						</SidebarMenuButton>
+					</SidebarMenuItem>
+				</Link>
+				<SidebarMenuItem className="hover:bg-transparent">
+					<SidebarSubmenu
+						label="Other Projects"
+						icon={<IconStack2 className="h-4 w-4" />}
+						forcePopup={true}
+					>
+						<Link to="https://doras.to?ref=uicomponentlibrary" target="_blank">
+							<SidebarSubmenuItem>Doras.to</SidebarSubmenuItem>
+						</Link>
+					</SidebarSubmenu>
+				</SidebarMenuItem>
+			</SidebarFooter>
 		</Sidebar>
 	);
 }

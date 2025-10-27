@@ -2,9 +2,17 @@
 
 import SimpleClipboard from "@@/registry/clipboard/clipboard";
 import { IconBrandNpm, IconBrandPnpm } from "@tabler/icons-react";
+import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import BunIcon from "@/components/icons/bun";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function ClipboardDemo01() {
 	const installSnippet = {
@@ -13,28 +21,62 @@ export default function ClipboardDemo01() {
 		bun: `bunx --bun shadcn@latest add`,
 	};
 	const [activeInstallTab, setActiveInstallTab] = useState<string>("npm");
+	const isMobile = useIsMobile();
+
+	const packageManagers = [
+		{ value: "npm", label: "npm", icon: <IconBrandNpm /> },
+		{ value: "pnpm", label: "pnpm", icon: <IconBrandPnpm /> },
+		{ value: "bun", label: "bun", icon: <BunIcon stroke="currentColor" /> },
+	];
+
+	const activePackageManager = packageManagers.find(
+		(pm) => pm.value === activeInstallTab,
+	);
+
 	return (
 		<div className="flex min-h-screen items-center justify-center p-6">
 			<Tabs
-				defaultValue="npm"
+				value={activeInstallTab}
 				className="gap-0 bg-card rounded-lg w-full"
 				onValueChange={(value) => setActiveInstallTab(value)}
 			>
 				<div className="flex items-center pt-2 px-2">
-					<TabsList>
-						<TabsTrigger value="npm">
-							<IconBrandNpm />
-							npm
-						</TabsTrigger>
-						<TabsTrigger value="pnpm">
-							<IconBrandPnpm />
-							pnpm
-						</TabsTrigger>
-						<TabsTrigger value="bun">
-							<BunIcon stroke="currentColor" />
-							bun
-						</TabsTrigger>
-					</TabsList>
+					{isMobile ? (
+						<DropdownMenu>
+							<DropdownMenuTrigger className="flex items-center gap-2 rounded-md bg-muted px-3 py-1.5 text-sm">
+								{activePackageManager?.icon}
+								{activePackageManager?.label}
+								<ChevronDownIcon className="size-4" />
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="start">
+								{packageManagers.map((pm) => (
+									<DropdownMenuItem
+										key={pm.value}
+										onClick={() => setActiveInstallTab(pm.value)}
+										className="gap-2"
+									>
+										{pm.icon}
+										{pm.label}
+									</DropdownMenuItem>
+								))}
+							</DropdownMenuContent>
+						</DropdownMenu>
+					) : (
+						<TabsList>
+							<TabsTrigger value="npm">
+								<IconBrandNpm />
+								npm
+							</TabsTrigger>
+							<TabsTrigger value="pnpm">
+								<IconBrandPnpm />
+								pnpm
+							</TabsTrigger>
+							<TabsTrigger value="bun">
+								<BunIcon stroke="currentColor" />
+								bun
+							</TabsTrigger>
+						</TabsList>
+					)}
 					<SimpleClipboard
 						textToCopy={
 							installSnippet[activeInstallTab as keyof typeof installSnippet]
