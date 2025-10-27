@@ -19,7 +19,7 @@ const config = defineConfig({
     nitroV2Plugin({ 
       preset: 'bun',
       rollupConfig: {
-        external: ['@vercel/og', 'satori'],
+        external: ['@vercel/og', 'satori', 'yoga-wasm-web'],
       },
     }),
     mdx({
@@ -27,6 +27,9 @@ const config = defineConfig({
     }),
     viteReact(),
   ],
+  ssr: {
+    external: ['@vercel/og', 'satori', 'yoga-wasm-web'],
+  },
 })
 
 export default config
