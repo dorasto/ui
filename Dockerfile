@@ -17,6 +17,9 @@ RUN bun run build
 FROM base AS runner
 WORKDIR /app
 
+# Force cache bust
+ARG CACHEBUST=1
+
 # Copy built application and ALL dependencies (not just production)
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package.json ./package.json

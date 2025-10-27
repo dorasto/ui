@@ -3,6 +3,7 @@ version: "3.8"
 services:
   latest-ui:
     image: ghcr.io/dorasto/ui:latest
+    pull_policy: always
     container_name: doras-ui
     restart: unless-stopped
     ports:
