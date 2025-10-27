@@ -79,7 +79,7 @@ code {
   --card-foreground: oklch(0.9851 0 0);
   --popover: oklch(0.2686 0 0);
   --popover-foreground: oklch(0.9851 0 0);
-  --primary: oklch(0.5555 0 0);
+  --primary: oklch(0.569 0.1256 303.35);
   --primary-foreground: oklch(0.9851 0 0);
   --secondary: oklch(0.2686 0 0);
   --secondary-foreground: oklch(0.9851 0 0);
@@ -245,5 +245,33 @@ code {
   
   & blockquote {
     @apply border-l-4 border-border pl-4 italic my-4;
+  }
+
+  & table {
+    @apply w-full border-collapse my-6 text-sm;
+  }
+
+  & thead {
+    @apply border-b border-border;
+  }
+
+  & th {
+    @apply text-left font-semibold py-3 px-4 bg-muted/50;
+  }
+
+  & tbody tr {
+    @apply border-b border-border;
+  }
+
+  & td {
+    @apply py-3 px-4;
+  }
+
+  & td:first-child code, & th:first-child {
+    @apply font-mono;
+  }
+
+  & tbody tr:hover {
+    @apply bg-muted/30;
   }
 }

@@ -18,6 +18,14 @@ export interface BlockExample {
 	icon?: React.ComponentType<{ size?: number | string; className?: string }>;
 }
 
+export interface PropDefinition {
+	name: string;
+	type: string;
+	defaultValue?: string;
+	description: string;
+	required?: boolean;
+}
+
 export interface BlockMetadata {
 	id: string;
 	category: string;
@@ -28,6 +36,8 @@ export interface BlockMetadata {
 	examples: BlockExample[];
 	/** Optional: If true, will attempt to load /src/content/docs/{id}.mdx for detailed documentation */
 	hasDocs?: boolean;
+	/** Optional: API props documentation */
+	props?: PropDefinition[];
 }
 
 export const blocksMetadata: BlockMetadata[] = [
@@ -52,6 +62,99 @@ export const blocksMetadata: BlockMetadata[] = [
 				name: "Custom button",
 				description:
 					"You can use your own button as a child component for more control and styling abilities",
+			},
+		],
+		props: [
+			{
+				name: "textToCopy",
+				type: "string",
+				description: "The text to copy to clipboard.",
+				required: true,
+			},
+			{
+				name: "children",
+				type: "React.ReactNode",
+				description:
+					"Custom trigger element. If not provided, uses default button with icons.",
+			},
+			{
+				name: "className",
+				type: "string",
+				description: "Additional CSS classes for the button.",
+			},
+			{
+				name: "iconSize",
+				type: "number",
+				defaultValue: "16",
+				description: "Size of the copy and check icons.",
+			},
+			{
+				name: "copiedDuration",
+				type: "number",
+				defaultValue: "1500",
+				description: "Duration in ms to show the copied state.",
+			},
+			{
+				name: "tooltipText",
+				type: "string",
+				defaultValue: '"Click to copy"',
+				description: "Tooltip text before copying.",
+			},
+			{
+				name: "tooltipCopiedText",
+				type: "string",
+				defaultValue: '"Copied!"',
+				description: "Tooltip text after copying.",
+			},
+			{
+				name: "showTooltip",
+				type: "boolean",
+				defaultValue: "true",
+				description: "Whether to show the tooltip.",
+			},
+			{
+				name: "copyIcon",
+				type: "React.ReactNode",
+				defaultValue: "<Copy />",
+				description: "Custom copy icon.",
+			},
+			{
+				name: "checkIcon",
+				type: "React.ReactNode",
+				defaultValue: "<Check />",
+				description: "Custom check icon.",
+			},
+			{
+				name: "checkIconClassName",
+				type: "string",
+				description: "CSS classes for the check icon.",
+			},
+			{
+				name: "copyIconClassName",
+				type: "string",
+				description: "CSS classes for the copy icon.",
+			},
+			{
+				name: "onCopy",
+				type: "() => void",
+				description: "Callback fired after successful copy.",
+			},
+			{
+				name: "onError",
+				type: "(error: Error) => void",
+				description: "Callback fired on copy failure.",
+			},
+			{
+				name: "tooltipDelayDuration",
+				type: "number",
+				defaultValue: "0",
+				description: "Delay before showing tooltip in ms.",
+			},
+			{
+				name: "disabled",
+				type: "boolean",
+				defaultValue: "false",
+				description: "Whether the component is disabled.",
 			},
 		],
 	},

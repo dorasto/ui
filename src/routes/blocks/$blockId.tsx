@@ -1,13 +1,10 @@
 import Clipboard from "@@/registry/clipboard/clipboard";
-import {
-	IconBrandNpm,
-	IconBrandPnpm,
-	IconBrandUbuntu,
-} from "@tabler/icons-react";
+import { IconBrandNpm, IconBrandPnpm } from "@tabler/icons-react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Monitor, Smartphone, Tablet } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { ImperativePanelGroupHandle } from "react-resizable-panels";
+import { ApiReference } from "@/components/api-reference";
 import BunIcon from "@/components/icons/bun";
 import { Button } from "@/components/ui/button";
 import { CodeBlock } from "@/components/ui/code-block";
@@ -22,7 +19,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { blocksMetadata } from "@/content/blocks-metadata";
 import { getBlockDocs, getExampleCode } from "@/lib/code-loader";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/blocks/$blockId")({
 	component: BlockPage,
@@ -285,6 +281,11 @@ function BlockPage() {
 					<div className="prose max-w-none">
 						<BlockDocsComponent />
 					</div>
+				)}
+
+				{/* API Reference from metadata */}
+				{block.props && block.props.length > 0 && (
+					<ApiReference props={block.props} />
 				)}
 
 				{/* Remaining Examples */}

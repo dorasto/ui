@@ -14,7 +14,7 @@ function RouteComponent() {
 		<div className="flex h-dvh relative overflow-hidden">
 			<MainSidebar />
 			<div className="flex-1 overflow-auto">
-				<div className="container mx-auto py-8 px-4">
+				<div className="container mx-auto lg:w-5xl py-8 px-4">
 					<Outlet />
 				</div>
 			</div>
