@@ -26,6 +26,8 @@ export interface BlockMetadata {
 	image?: string;
 	icon?: React.ComponentType<{ size?: number | string; className?: string }>;
 	examples: BlockExample[];
+	/** Optional: If true, will attempt to load /src/content/docs/{id}.mdx for detailed documentation */
+	hasDocs?: boolean;
 }
 
 export const blocksMetadata: BlockMetadata[] = [
@@ -38,6 +40,7 @@ export const blocksMetadata: BlockMetadata[] = [
 			"Copy to clipboard components with various styles and interactions.",
 		image: "/components/clipboard.png",
 		icon: IconCopy,
+		hasDocs: true,
 		examples: [
 			{
 				id: "clipboard-01",

@@ -186,3 +186,64 @@ code {
     @apply bg-background text-foreground;
   }
 }
+
+/* Prose styles for MDX content */
+.prose {
+  @apply text-foreground;
+  
+  & h1 {
+    @apply text-3xl font-bold mt-8 mb-4;
+  }
+  
+  & h2 {
+    @apply text-2xl font-semibold mt-6 mb-3;
+  }
+  
+  & h3 {
+    @apply text-xl font-semibold mt-4 mb-2;
+  }
+  
+  & p {
+    @apply my-4 leading-7;
+  }
+  
+  & ul, & ol {
+    @apply my-4 ml-6;
+  }
+  
+  & li {
+    @apply my-2;
+  }
+  
+  & ul > li {
+    @apply list-disc;
+  }
+  
+  & ol > li {
+    @apply list-decimal;
+  }
+  
+  & strong {
+    @apply font-semibold;
+  }
+  
+  & code {
+    @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+  
+  & pre {
+    @apply bg-card p-4 rounded-lg overflow-x-auto my-4;
+  }
+  
+  & pre code {
+    @apply bg-transparent p-0;
+  }
+  
+  & a {
+    @apply text-primary underline underline-offset-4 hover:text-primary/80;
+  }
+  
+  & blockquote {
+    @apply border-l-4 border-border pl-4 italic my-4;
+  }
+}

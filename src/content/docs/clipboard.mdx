@@ -1,0 +1,35 @@
+## Overview
+
+The Clipboard component provides a simple and elegant way to copy text to the user's clipboard. It comes with built-in visual feedback and supports both default and custom button styles.
+
+## Features
+
+- **One-click copying** - Simple click to copy text to clipboard
+- **Visual feedback** - Automatic icon change on successful copy
+- **Customizable** - Use default button or provide your own child component
+- **Accessible** - Includes proper ARIA labels and keyboard support
+- **Lightweight** - Minimal dependencies, uses native Clipboard API
+
+## When to Use
+
+Use the Clipboard component when you need to:
+
+- Allow users to copy code snippets or commands
+- Copy configuration values or API keys
+- Enable easy sharing of links or identifiers
+- Provide quick copy functionality for any text content
+
+## Best Practices
+
+1. **Provide clear visual feedback** - The component automatically shows a checkmark when text is copied
+2. **Use appropriate button sizes** - Match the button size to your UI context
+3. **Consider accessibility** - The component includes ARIA labels, ensure surrounding context is clear
+4. **Handle long text** - For very long text, consider truncating the display while copying the full value
+
+## API Reference
+
+The Clipboard component accepts the following props:
+
+- `textToCopy` (string, required) - The text that will be copied to the clipboard
+- `className` (string, optional) - Additional CSS classes to apply to the button
+- `children` (ReactNode, optional) - Custom button content (if not provided, uses default icons)
