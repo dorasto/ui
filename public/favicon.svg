@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <!-- Background square with primary color -->
+  <rect width="24" height="24" rx="2" fill="#8763B3"/>
+  <!-- IconRipple from Tabler Icons, rotated -12 degrees and centered -->
+  <g transform="rotate(-12 12 12)">
+    <path d="M3 7c3 -2 6 -2 9 0s6 2 9 0" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M3 17c3 -2 6 -2 9 0s6 2 9 0" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M3 12c3 -2 6 -2 9 0s6 2 9 0" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+</svg>
