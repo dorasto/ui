@@ -6,10 +6,10 @@ services:
     container_name: doras-ui
     restart: unless-stopped
     ports:
-      - "${PORT:-3000}:${PORT:-3000}"
+      - "${HOST_PORT:-3001}:3000"
     environment:
       - NODE_ENV=production
-      - PORT=${PORT:-3000}
+      - PORT=3000
       - DOMAIN=${DOMAIN:-localhost}
     # Optional: Add volume for logs or data persistence
     # volumes:
