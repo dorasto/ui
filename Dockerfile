@@ -17,12 +17,10 @@ RUN bun run build
 FROM base AS runner
 WORKDIR /app
 
-# Copy built application
+# Copy built application and node_modules
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package.json ./package.json
-
-# Install production dependencies only
-RUN bun install --production --frozen-lockfile
+COPY --from=builder /app/node_modules ./node_modules
 
 # Set production environment
 ENV NODE_ENV=production
