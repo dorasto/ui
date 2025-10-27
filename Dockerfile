@@ -17,7 +17,7 @@ RUN bun run build
 FROM base AS runner
 WORKDIR /app
 
-# Copy built application and node_modules
+# Copy built application and ALL dependencies (not just production)
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
