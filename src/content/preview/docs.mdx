@@ -1,0 +1,50 @@
+import { CodeBlock } from "/src/components/ui/code-block.tsx"
+import { Label } from "/src/components/ui/label.tsx"
+
+# Features
+
+- ✅ **Hover activation** - Shows preview on hover with smooth animations
+- ✅ **OpenGraph support** - Displays OG images, titles, and descriptions
+- ✅ **Server-side fetching** - Fetches metadata via API route
+- ✅ **Customizable styling** - Control what to show/hide with props
+- ✅ **Platform agnostic** - Works with any React framework
+- ✅ **Accessible** - Built on Radix UI with proper ARIA attributes
+
+# Usage
+<CodeBlock className="bg-card!" code={`<Preview url="https://github.com" />`} />
+
+
+# API Route Setup
+To fetch metadata, you need to create an API route.
+### Tanstack Start/Router
+<CodeBlock className="bg-card!" code={`// src/routes/api/preview.ts
+import { createFileRoute } from '@tanstack/react-router'
+
+// ... metadata fetching logic ...
+
+export const Route = createFileRoute('/api/preview')({
+  server: {
+    handlers: {
+      GET: async ({ request }) => {
+        const url = new URL(request.url).searchParams.get("url")
+        if (!url) {
+          return Response.json({ error: "URL required" }, { status: 400 })
+        }
+        const metadata = await fetchPreview(url)
+        return Response.json(metadata)
+      },
+    },
+  },
+})`} />
+
+
+### Next.js (untested)
+<CodeBlock className="bg-card!" code={`// app/api/preview/route.ts
+export async function GET(request: Request) {
+  const url = new URL(request.url).searchParams.get("url")
+  if (!url) {
+    return Response.json({ error: "URL required" }, { status: 400 })
+  }
+  const metadata = await fetchPreview(url)
+  return Response.json(metadata)
+}`} />

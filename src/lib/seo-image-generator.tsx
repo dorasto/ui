@@ -40,7 +40,7 @@ export async function generateSeoImage({
 	description,
 	siteName = "Doras UI",
 	url = "ui.doras.to",
-	image,
+	image = "https://ui.doras.to/logo192.png",
 }: SeoImageGeneratorProps) {
 	// Load fonts
 	const fontWeights = [400, 600, 700] as const;
@@ -98,7 +98,6 @@ export async function generateSeoImage({
 					padding: "80px",
 					height: "100%",
 					position: "relative",
-					zIndex: 10,
 				}}
 			>
 				{/* Site branding */}
@@ -130,7 +129,7 @@ export async function generateSeoImage({
 				</div>
 
 				{/* Component Image */}
-				{image && (
+				{image ? (
 					<div
 						style={{
 							display: "flex",
@@ -139,6 +138,23 @@ export async function generateSeoImage({
 					>
 						<img
 							src={image}
+							width={500}
+							alt="component"
+							style={{
+								borderRadius: "8px",
+								objectFit: "contain",
+							}}
+						/>
+					</div>
+				) : (
+					<div
+						style={{
+							display: "flex",
+							marginBottom: description ? "40px" : "0",
+						}}
+					>
+						<img
+							src={"https://ui.doras.to/logo192.png"}
 							height={100}
 							alt="component"
 							style={{

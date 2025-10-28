@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "preview",
+  "type": "registry:block",
+  "title": "URL Preview",
+  "author": "Tommy Lundy <tommerty@doras.to>",
+  "description": "Show website metadata and OpenGraph images when hovering over URLs",
+  "registryDependencies": [
+    "hover-card"
+  ],
+  "files": [
+    {
+      "path": "registry/preview/preview.tsx",
+      "content": "\"use client\"\n\nimport { cn } from \"@/lib/utils\"\nimport { useEffect, useState } from \"react\"\nimport {\n\tHoverCard,\n\tHoverCardContent,\n\tHoverCardTrigger,\n} from \"@/components/ui/hover-card\"\nimport { IconExternalLink } from \"@tabler/icons-react\"\n\ntype PreviewMetadata = {\n\ttitle: string | null\n\tdescription: string | null\n\timage: string | null\n\turl: string | null\n}\n\nexport interface PreviewProps {\n\turl: string\n\tchildren?: React.ReactNode\n\tshowImage?: boolean\n\tshowTitle?: boolean\n\tshowDescription?: boolean\n\tclassName?: string\n\tcontentClassName?: string\n\tonError?: (error: Error) => void\n}\n\nconst fetchMetadata = async (url: string): Promise<PreviewMetadata> => {\n\ttry {\n\t\t// Use a CORS proxy for client-side requests\n\t\tconst proxyUrl = `/api/preview?url=${encodeURIComponent(url)}`\n\t\tconst response = await fetch(proxyUrl)\n\t\t\n\t\tif (!response.ok) {\n\t\t\tthrow new Error(`Failed to fetch metadata: ${response.statusText}`)\n\t\t}\n\t\t\n\t\treturn await response.json()\n\t} catch (error) {\n\t\t// Fallback to basic metadata from URL\n\t\tconst domain = new URL(url).hostname\n\t\treturn {\n\t\t\ttitle: domain,\n\t\t\tdescription: `Visit ${domain}`,\n\t\t\timage: null,\n\t\t\turl,\n\t\t}\n\t}\n}\n\nexport function Preview({\n\turl,\n\tchildren,\n\tshowImage = true,\n\tshowTitle = true,\n\tshowDescription = true,\n\tclassName,\n\tcontentClassName,\n\tonError,\n}: PreviewProps) {\n\tconst [metadata, setMetadata] = useState<PreviewMetadata | null>(null)\n\tconst [loading, setLoading] = useState(false)\n\n\tuseEffect(() => {\n\t\tasync function fetchData() {\n\t\t\tsetLoading(true)\n\t\t\ttry {\n\t\t\t\tconst data = await fetchMetadata(url)\n\t\t\t\tsetMetadata(data)\n\t\t\t} catch (error) {\n\t\t\t\tconst err = error instanceof Error ? error : new Error('Unknown error')\n\t\t\t\tonError?.(err)\n\t\t\t\t\n\t\t\t\t// Fallback metadata\n\t\t\t\tconst domain = new URL(url).hostname\n\t\t\t\tsetMetadata({\n\t\t\t\t\ttitle: domain,\n\t\t\t\t\tdescription: `Visit ${domain}`,\n\t\t\t\t\timage: null,\n\t\t\t\t\turl,\n\t\t\t\t})\n\t\t\t} finally {\n\t\t\t\tsetLoading(false)\n\t\t\t}\n\t\t}\n\n\t\tfetchData()\n\t}, [url, onError])\n\n\tconst defaultTrigger = (\n\t\t<a\n\t\t\thref={url}\n\t\t\tclassName=\"text-primary hover:underline inline-flex items-center gap-1\"\n\t\t>\n\t\t\t{new URL(url).hostname}\n\t\t\t<IconExternalLink className=\"size-3\" />\n\t\t</a>\n\t)\n\n\treturn (\n\t\t<HoverCard openDelay={200}>\n\t\t\t<HoverCardTrigger asChild className={className}>\n\t\t\t\t{children || defaultTrigger}\n\t\t\t</HoverCardTrigger>\n\t\t\t<HoverCardContent className={cn(\"md:w-80 p-0 overflow-hidden border\", contentClassName)}>\n                <a href={url}>\n\t\t\t\t{loading ? (\n\t\t\t\t\t<div className=\"flex items-center justify-center py-4\">\n\t\t\t\t\t\t<div className=\"text-sm text-muted-foreground\">Loading...</div>\n\t\t\t\t\t</div>\n\t\t\t\t) : (\n\t\t\t\t\t<div>\n\t\t\t\t\t\t{showImage && metadata?.image && (\n\t\t\t\t\t\t\t<img\n\t\t\t\t\t\t\t\tsrc={metadata.image}\n\t\t\t\t\t\t\t\talt={metadata.title || \"\"}\n\t\t\t\t\t\t\t\tclassName=\"aspect-video w-full border object-cover bg-muted\"\n\t\t\t\t\t\t\t/>\n\t\t\t\t\t\t)}\n\t\t\t\t\t\t<div className=\"p-3\">\n\t\t\t\t\t\t\t{showTitle && metadata?.title && (\n\t\t\t\t\t\t\t\t<h4 className=\"font-semibold text-sm leading-tight\">\n\t\t\t\t\t\t\t\t\t{metadata.title}\n\t\t\t\t\t\t\t\t</h4>\n\t\t\t\t\t\t\t)}\n\t\t\t\t\t\t\t{showDescription && metadata?.description && (\n\t\t\t\t\t\t\t\t<p className=\"text-muted-foreground text-xs leading-relaxed line-clamp-2\">\n\t\t\t\t\t\t\t\t\t{metadata.description}\n\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t)}\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t)}</a>\n\t\t\t</HoverCardContent>\n\t\t</HoverCard>\n\t)\n}\n",
+      "type": "registry:component",
+      "target": "components/doras-ui/preview.tsx"
+    }
+  ],
+  "categories": [
+    "general"
+  ]
+}

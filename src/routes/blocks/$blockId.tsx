@@ -122,7 +122,7 @@ function BlockPage() {
 			}
 		}
 	};
-	const baseUrl = import.meta.env.VITE_BASE_URL;
+	const baseUrl = "https://ui.doras.to";
 	const installSnippet = {
 		npm: `npx shadcn@latest add ${baseUrl}/r/${block.id}.json`,
 		pnpm: `pnpm dlx shadcn@latest add ${baseUrl}/r/${block.id}.json`,

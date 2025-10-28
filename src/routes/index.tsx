@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Package } from "lucide-react";
+import { ArrowRight, Package, Star } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { blocksMetadata } from "@/content/blocks-metadata";
+import { useGitHubStars } from "@/hooks/use-github-stars";
 import { seo } from "@/utils/seo";
 
 export const Route = createFileRoute("/")({
@@ -21,6 +24,7 @@ export const Route = createFileRoute("/")({
 function App() {
 	const totalBlocks = blocksMetadata.length;
 	const categories = [...new Set(blocksMetadata.map((b) => b.category))];
+	const { data: githubData, isLoading: isLoadingStars } = useGitHubStars();
 
 	return (
 		<div className="container mx-auto py-20 px-4">
@@ -33,18 +37,34 @@ function App() {
 					</p>
 				</div>
 
-				<div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-					<div className="flex items-center gap-2">
+				<div className="flex items-center justify-center gap-4 text-sm">
+					<Badge variant="secondary" className="flex items-center gap-2 h-6">
 						<Package className="h-4 w-4" />
 						<span>
 							{totalBlocks} {totalBlocks === 1 ? "Block" : "Blocks"}
 						</span>
-					</div>
-					<div className="h-4 w-px bg-border" />
-					<div>
-						{categories.length}{" "}
-						{categories.length === 1 ? "Category" : "Categories"}
-					</div>
+					</Badge>
+					<Badge variant="secondary" className="flex items-center gap-2 h-6">
+						<span>
+							{categories.length}{" "}
+							{categories.length === 1 ? "Category" : "Categories"}
+						</span>
+					</Badge>
+					{isLoadingStars ? (
+						<Skeleton className="h-6 w-20" />
+					) : (
+						<a href="https://github.com/dorasto/ui">
+							<Badge
+								variant="secondary"
+								className="flex items-center gap-2 h-6"
+							>
+								<Star className="h-4 w-4" />
+								<span>
+									{isLoadingStars ? "" : githubData?.stars || "0"} stars
+								</span>
+							</Badge>
+						</a>
+					)}
 				</div>
 
 				<div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">

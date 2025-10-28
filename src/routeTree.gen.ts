@@ -18,6 +18,8 @@ import { Route as OgBlocksDotpngRouteImport } from './routes/og/blocks[.]png'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoTableRouteImport } from './routes/demo/table'
 import { Route as BlocksBlockIdRouteImport } from './routes/blocks/$blockId'
+import { Route as ApiPreviewRouteImport } from './routes/api/preview'
+import { Route as ApiGithubStarsRouteImport } from './routes/api/github-stars'
 import { Route as OgBlocksBlockIdDotpngRouteImport } from './routes/og/blocks/$blockId[.]png'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
@@ -75,6 +77,16 @@ const BlocksBlockIdRoute = BlocksBlockIdRouteImport.update({
   id: '/$blockId',
   path: '/$blockId',
   getParentRoute: () => BlocksRouteRoute,
+} as any)
+const ApiPreviewRoute = ApiPreviewRouteImport.update({
+  id: '/api/preview',
+  path: '/api/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGithubStarsRoute = ApiGithubStarsRouteImport.update({
+  id: '/api/github-stars',
+  path: '/api/github-stars',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OgBlocksBlockIdDotpngRoute = OgBlocksBlockIdDotpngRouteImport.update({
   id: '/og/blocks/$blockId.png',
@@ -140,6 +152,8 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/blocks': typeof BlocksRouteRouteWithChildren
+  '/api/github-stars': typeof ApiGithubStarsRoute
+  '/api/preview': typeof ApiPreviewRoute
   '/blocks/$blockId': typeof BlocksBlockIdRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -162,6 +176,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/github-stars': typeof ApiGithubStarsRoute
+  '/api/preview': typeof ApiPreviewRoute
   '/blocks/$blockId': typeof BlocksBlockIdRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -186,6 +202,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/blocks': typeof BlocksRouteRouteWithChildren
+  '/api/github-stars': typeof ApiGithubStarsRoute
+  '/api/preview': typeof ApiPreviewRoute
   '/blocks/$blockId': typeof BlocksBlockIdRoute
   '/demo/table': typeof DemoTableRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -211,6 +229,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/blocks'
+    | '/api/github-stars'
+    | '/api/preview'
     | '/blocks/$blockId'
     | '/demo/table'
     | '/demo/tanstack-query'
@@ -233,6 +253,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/api/github-stars'
+    | '/api/preview'
     | '/blocks/$blockId'
     | '/demo/table'
     | '/demo/tanstack-query'
@@ -256,6 +278,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/blocks'
+    | '/api/github-stars'
+    | '/api/preview'
     | '/blocks/$blockId'
     | '/demo/table'
     | '/demo/tanstack-query'
@@ -280,6 +304,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BlocksRouteRoute: typeof BlocksRouteRouteWithChildren
+  ApiGithubStarsRoute: typeof ApiGithubStarsRoute
+  ApiPreviewRoute: typeof ApiPreviewRoute
   DemoTableRoute: typeof DemoTableRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   OgBlocksDotpngRoute: typeof OgBlocksDotpngRoute
@@ -362,6 +388,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/blocks/$blockId'
       preLoaderRoute: typeof BlocksBlockIdRouteImport
       parentRoute: typeof BlocksRouteRoute
+    }
+    '/api/preview': {
+      id: '/api/preview'
+      path: '/api/preview'
+      fullPath: '/api/preview'
+      preLoaderRoute: typeof ApiPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/github-stars': {
+      id: '/api/github-stars'
+      path: '/api/github-stars'
+      fullPath: '/api/github-stars'
+      preLoaderRoute: typeof ApiGithubStarsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/og/blocks/$blockId.png': {
       id: '/og/blocks/$blockId.png'
@@ -469,6 +509,8 @@ const BlocksRouteRouteWithChildren = BlocksRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BlocksRouteRoute: BlocksRouteRouteWithChildren,
+  ApiGithubStarsRoute: ApiGithubStarsRoute,
+  ApiPreviewRoute: ApiPreviewRoute,
   DemoTableRoute: DemoTableRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   OgBlocksDotpngRoute: OgBlocksDotpngRoute,
