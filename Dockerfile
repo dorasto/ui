@@ -9,6 +9,11 @@ RUN bun install --frozen-lockfile
 
 # Build stage
 FROM base AS builder
+
+# Force cache bust for the build stage
+ARG CACHEBUST=1
+ENV CACHEBUST=$CACHEBUST
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN bun registry:build && bun run build

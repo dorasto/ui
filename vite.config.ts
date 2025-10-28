@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
-// import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from '@tailwindcss/vite'
 import mdx from '@mdx-js/rollup'
 import remarkGfm from 'remark-gfm'
 import remarkFrontmatter from 'remark-frontmatter'
@@ -34,7 +34,7 @@ const config = defineConfig({
     viteTsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
-    // tailwindcss(),
+    tailwindcss(),
     tanstackStart(),
     nitroV2Plugin({ 
       preset: 'bun',
@@ -51,6 +51,7 @@ const config = defineConfig({
   ssr: {
     external: ['@vercel/og', 'satori', 'yoga-wasm-web'],
   },
+
 })
 
 export default config
