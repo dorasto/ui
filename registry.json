@@ -1,17 +1,16 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "acme",
+  "name": "doras-ui",
   "homepage": "https://ui.doras.to",
   "items": [
   {
     "name": "clipboard",
     "type": "registry:block",
     "title": "Clipboard",
+    "author": "Tommy Lundy <tommerty@doras.to>",
     "description": "A simple method to copy items to the clipboard",
-      "categories": ["dashboard"],
-      "meta": {
-        "author": "tommerty"
-      },
+      "categories": ["general"],
+
       "registryDependencies": [
     "button",
     "tooltip"
@@ -19,7 +18,26 @@
     "files": [
         {
             "path": "registry/clipboard/clipboard.tsx",
-            "type": "registry:component"
+            "type": "registry:component",
+            "target": "components/doras-ui/clipboard.tsx"
+        }
+    ]
+  },
+  {
+    "name": "preview",
+    "type": "registry:block",
+    "title": "URL Preview",
+    "author": "Tommy Lundy <tommerty@doras.to>",
+    "description": "Show website metadata and OpenGraph images when hovering over URLs",
+      "categories": ["general"],
+      "registryDependencies": [
+    "hover-card"
+      ],
+    "files": [
+        {
+            "path": "registry/preview/preview.tsx",
+            "type": "registry:component",
+            "target": "components/doras-ui/preview.tsx"
         }
     ]
   }

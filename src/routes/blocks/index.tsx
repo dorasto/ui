@@ -51,39 +51,41 @@ function BlocksIndex() {
 						</div>
 
 						<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-							{blocks.map((block) => (
-								<Link
-									key={block.id}
-									to="/blocks/$blockId"
-									params={{ blockId: block.id }}
-									className="group rounded-lg border bg-card transition-all hover:border-primary hover:shadow-md"
-								>
-									<div className="p-6 space-y-3">
-										<div className="flex items-start justify-between">
-											<h3 className="font-semibold text-lg transition-colors flex items-center gap-2">
-												{block.icon && <block.icon className="h-4 w-4" />}
-												{block.name}
-											</h3>
-											<span className="text-xs text-primary-foreground capitalize px-2 py-1 rounded bg-primary">
-												{block.examples.length}{" "}
-												{block.examples.length === 1 ? "example" : "examples"}
-											</span>
+							{blocks
+								.filter((block) => !block.preview)
+								.map((block) => (
+									<Link
+										key={block.id}
+										to="/blocks/$blockId"
+										params={{ blockId: block.id }}
+										className="group rounded-lg border bg-card transition-all hover:border-primary hover:shadow-md"
+									>
+										<div className="p-6 space-y-3">
+											<div className="flex items-start justify-between">
+												<h3 className="font-semibold text-lg transition-colors flex items-center gap-2">
+													{block.icon && <block.icon className="h-4 w-4" />}
+													{block.name}
+												</h3>
+												<span className="text-xs text-primary-foreground capitalize px-2 py-1 rounded bg-primary">
+													{block.examples.length}{" "}
+													{block.examples.length === 1 ? "example" : "examples"}
+												</span>
+											</div>
+											{block.image && (
+												<img
+													src={block.image}
+													alt={block.name}
+													className="w-full p-3 bg-background rounded-lg"
+												/>
+											)}
+											{block.description && (
+												<p className="text-sm line-clamp-2">
+													{block.description}
+												</p>
+											)}
 										</div>
-										{block.image && (
-											<img
-												src={block.image}
-												alt={block.name}
-												className="w-full p-3 bg-background rounded-lg"
-											/>
-										)}
-										{block.description && (
-											<p className="text-sm line-clamp-2">
-												{block.description}
-											</p>
-										)}
-									</div>
-								</Link>
-							))}
+									</Link>
+								))}
 						</div>
 					</section>
 				))}

@@ -122,47 +122,49 @@ export function MainSidebar() {
 								</SidebarMenuSub>
 							</SidebarMenuItem>
 							<CollapsibleContent className="">
-								{blocksMetadata.map((block) => {
-									const isActive = pathname === `/blocks/${block.id}`;
+								{blocksMetadata
+									.filter((block) => !block.preview)
+									.map((block) => {
+										const isActive = pathname === `/blocks/${block.id}`;
 
-									return (
-										<SidebarMenuItem
-											key={block.id}
-											isActive={isActive}
-											hideWhenCollapsed
-										>
-											<Link
-												to="/blocks/$blockId"
-												className="w-full"
-												params={{ blockId: block.id }}
+										return (
+											<SidebarMenuItem
+												key={block.id}
+												isActive={isActive}
+												hideWhenCollapsed
 											>
-												<SidebarMenuButton
-													icon={
-														block.icon ? (
-															<block.icon className="h-4 w-4" />
-														) : null
-													}
-													tooltip={block.name}
+												<Link
+													to="/blocks/$blockId"
+													className="w-full"
+													params={{ blockId: block.id }}
 												>
-													{block.name}
-												</SidebarMenuButton>
-											</Link>
-										</SidebarMenuItem>
-									);
-								})}
+													<SidebarMenuButton
+														icon={
+															block.icon ? (
+																<block.icon className="h-4 w-4" />
+															) : null
+														}
+														tooltip={block.name}
+													>
+														{block.name}
+													</SidebarMenuButton>
+												</Link>
+											</SidebarMenuItem>
+										);
+									})}
 							</CollapsibleContent>
 						</Collapsible>
 					</SidebarMenu>
 				</SidebarGroup>
 			</SidebarContent>
 			<SidebarFooter>
-				<Link to="/">
+				<a href="https://github.com/dorasto/ui">
 					<SidebarMenuItem>
 						<SidebarMenuButton icon={<IconBrandGithub />} tooltip="GitHub">
 							GitHub
 						</SidebarMenuButton>
 					</SidebarMenuItem>
-				</Link>
+				</a>
 				<SidebarMenuItem className="hover:bg-transparent">
 					<SidebarSubmenu
 						label="Other Projects"

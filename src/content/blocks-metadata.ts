@@ -1,12 +1,7 @@
-import {
-	IconClipboard,
-	IconCopy,
-	IconMail,
-	IconTerminal,
-} from "@tabler/icons-react";
+import { IconCopy, IconExternalLink } from "@tabler/icons-react";
 
 export const categoryIds = {
-	Clipboard: "clipboard",
+	General: "general",
 	// Add more categories as you expand
 } as const;
 
@@ -38,12 +33,13 @@ export interface BlockMetadata {
 	hasDocs?: boolean;
 	/** Optional: API props documentation */
 	props?: PropDefinition[];
+	preview?: boolean;
 }
 
 export const blocksMetadata: BlockMetadata[] = [
 	{
 		id: "clipboard",
-		category: categoryIds.Clipboard,
+		category: categoryIds.General,
 
 		name: "Clipboard",
 		description:
@@ -161,6 +157,85 @@ export const blocksMetadata: BlockMetadata[] = [
 				type: "boolean",
 				defaultValue: "false",
 				description: "Whether the component is disabled.",
+			},
+		],
+	},
+	{
+		id: "preview",
+		category: categoryIds.General,
+		name: "URL Preview",
+		description:
+			"Show website metadata and OpenGraph images when hovering over URLs.",
+		image: "/components/preview.png",
+		icon: IconExternalLink,
+		hasDocs: true,
+		examples: [
+			{
+				id: "preview-01",
+				name: "Basic",
+				description:
+					"Simple URL preview with hover card showing website metadata.",
+				iframeHeight: "600px",
+			},
+			{
+				id: "preview-02",
+				name: "Hide the image",
+				description:
+					"Preview without displaying the OpenGraph image in the hover card.",
+			},
+			{
+				id: "preview-03",
+				name: "Custom trigger",
+				description:
+					"Using a custom button as the trigger element for the URL preview hover card.",
+				iframeHeight: "600px",
+			},
+		],
+		props: [
+			{
+				name: "url",
+				type: "string",
+				description: "The URL to preview and fetch metadata for.",
+				required: true,
+			},
+			{
+				name: "children",
+				type: "React.ReactNode",
+				description:
+					"Custom trigger element. If not provided, uses default link with external icon.",
+			},
+			{
+				name: "showImage",
+				type: "boolean",
+				defaultValue: "true",
+				description: "Whether to display the OpenGraph image.",
+			},
+			{
+				name: "showTitle",
+				type: "boolean",
+				defaultValue: "true",
+				description: "Whether to display the page title.",
+			},
+			{
+				name: "showDescription",
+				type: "boolean",
+				defaultValue: "true",
+				description: "Whether to display the page description.",
+			},
+			{
+				name: "className",
+				type: "string",
+				description: "Additional CSS classes for the trigger element.",
+			},
+			{
+				name: "contentClassName",
+				type: "string",
+				description: "Additional CSS classes for the hover card content.",
+			},
+			{
+				name: "onError",
+				type: "(error: Error) => void",
+				description: "Callback function called when metadata fetching fails.",
 			},
 		],
 	},
