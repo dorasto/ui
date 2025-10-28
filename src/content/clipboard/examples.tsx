@@ -1,10 +1,16 @@
 "use client";
 
 import Clipboard from "@@/registry/clipboard/clipboard";
-import { IconBrandNpm, IconBrandPnpm } from "@tabler/icons-react";
+import {
+	IconBrandNpm,
+	IconBrandPnpm,
+	IconCheck,
+	IconCopy,
+} from "@tabler/icons-react";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import BunIcon from "@/components/icons/bun";
+import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -14,7 +20,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-export default function ClipboardDemo01() {
+// Example 01: Tabs with code copy
+export function Example01() {
 	const installSnippet = {
 		npm: `npx shadcn@latest add`,
 		pnpm: `pnpm dlx shadcn@latest add`,
@@ -105,6 +112,43 @@ export default function ClipboardDemo01() {
 					</TabsContent>
 				</div>
 			</Tabs>
+		</div>
+	);
+}
+
+// Example 02: Custom button with clipboard
+export function Example02() {
+	const [copied, setCopied] = useState(false);
+
+	const handleCopy = () => {
+		setCopied(true);
+		setTimeout(() => setCopied(false), 1500);
+	};
+
+	return (
+		<div className="flex min-h-screen items-center justify-center p-6">
+			<div className="flex items-center justify-between rounded-md border bg-muted/50 px-3 py-2 gap-9">
+				<div className="space-y-0.5">
+					<p className="text-xs font-medium">Email</p>
+					<p className="text-xs font-mono text-muted-foreground">
+						me@example.com
+					</p>
+				</div>
+				<Clipboard textToCopy={"me@example.com"} onCopy={handleCopy}>
+					<Button variant={copied ? "default" : "outline"} size={"icon-lg"}>
+						{copied ? <IconCheck /> : <IconCopy />}
+					</Button>
+				</Clipboard>
+			</div>
+		</div>
+	);
+}
+
+// Example 03: Simple clipboard
+export function Example03() {
+	return (
+		<div className="flex min-h-screen items-center justify-center p-6">
+			<Clipboard textToCopy={"Text to copy"} />
 		</div>
 	);
 }

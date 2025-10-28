@@ -3,8 +3,8 @@
  * Uses Vite's import.meta.glob to load raw source files
  */
 
-// Load all example component files as raw strings from the new organized structure
-const modules = import.meta.glob("/src/content/*/examples/*.tsx", {
+// Load consolidated examples.tsx files as raw strings
+const modules = import.meta.glob("/src/content/*/examples.tsx", {
 	query: "?raw",
 	import: "default",
 });
@@ -15,9 +15,9 @@ export const mdxModules = import.meta.glob("/src/content/*/docs.mdx", {
 });
 
 /**
- * Get the raw source code for an example by its ID
+ * Extract a specific example function from the consolidated examples.tsx file
  * @param exampleId - The ID of the example (e.g., "clipboard-01")
- * @returns Promise that resolves to the raw source code string
+ * @returns Promise that resolves to the raw source code string of that specific example
  */
 export async function getExampleCode(
 	exampleId: string,
@@ -30,17 +30,36 @@ export async function getExampleCode(
 	}
 
 	const [, blockName, exampleNum] = match;
-	const path = `/src/content/${blockName}/examples/example-${exampleNum}.tsx`;
+	const path = `/src/content/${blockName}/examples.tsx`;
 	const loader = modules[path];
 
 	if (!loader) {
-		console.warn(`No code found for example: ${exampleId} at path: ${path}`);
+		console.warn(
+			`No examples file found for block: ${blockName} at path: ${path}`,
+		);
 		return null;
 	}
 
 	try {
-		const code = await loader();
-		return code as string;
+		const fullCode = (await loader()) as string;
+
+		// Extract the specific example function from the file
+		const functionName = `Example${exampleNum}`;
+		const regex = new RegExp(
+			`export function ${functionName}\\(\\)[^{]*\\{[\\s\\S]*?^\\}`,
+			"m",
+		);
+
+		const match = fullCode.match(regex);
+		if (match) {
+			return match[0];
+		}
+
+		// If regex fails, return the whole file (fallback)
+		console.warn(
+			`Could not extract ${functionName} from ${path}, returning full file`,
+		);
+		return fullCode;
 	} catch (error) {
 		console.error(`Error loading code for ${exampleId}:`, error);
 		return null;
