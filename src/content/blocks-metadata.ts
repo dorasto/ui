@@ -34,7 +34,7 @@ export interface BlockMetadata {
 	image?: string;
 	icon?: React.ComponentType<{ size?: number | string; className?: string }>;
 	examples: BlockExample[];
-	/** Optional: If true, will attempt to load /src/content/docs/{id}.mdx for detailed documentation */
+	/** Optional: If true, will attempt to load /src/content/{id}/docs.mdx for detailed documentation */
 	hasDocs?: boolean;
 	/** Optional: API props documentation */
 	props?: PropDefinition[];
