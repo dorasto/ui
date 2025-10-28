@@ -2,37 +2,38 @@
 FROM oven/bun:1-alpine AS base
 WORKDIR /app
 
-# Install dependencies
+# Install dependencies stage
 FROM base AS deps
 COPY package.json bun.lock* ./
 RUN bun install --frozen-lockfile
 
-# Build the application
+# Build stage
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN bun run build
 
-# Production image
+# Production stage - optimized
 FROM base AS runner
 WORKDIR /app
 
-# Force cache bust
+# Force cache bust (keeps image fresh)
 ARG CACHEBUST=1
 
-# Copy built application and ALL dependencies (not just production)
+# Copy built application and all dependencies
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
 
 # Set production environment
 ENV NODE_ENV=production
-
-# Default port (can be overridden)
 ENV PORT=3000
 
+# Don't run as root
+USER bun
+
 # Expose the port
-EXPOSE ${PORT}
+EXPOSE 3000
 
 # Start the application
 CMD ["bun", "run", ".output/server/index.mjs"]

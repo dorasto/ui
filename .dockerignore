@@ -2,10 +2,17 @@
 node_modules
 .pnp
 .pnp.js
+bun.lockb
 
 # Testing
 coverage
 *.log
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+__tests__
+__mocks__
 
 # Production
 .output
@@ -45,8 +52,14 @@ yarn-error.log*
 README.md
 CHANGELOG.md
 LICENSE
+*.md
 
 # Docker
 Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Scripts (unless needed)
+scripts
 docker-compose.yml
 .dockerignore
