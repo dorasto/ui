@@ -8,8 +8,8 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
-import { defaultSEO, seo } from "../utils/seo";
 import appCss from "../styles.css?url";
+import { defaultSEO, seo } from "../utils/seo";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
