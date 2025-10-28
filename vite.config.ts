@@ -30,6 +30,14 @@ const config = defineConfig({
   ssr: {
     external: ['@vercel/og', 'satori', 'yoga-wasm-web'],
   },
+  build: {
+    cssCodeSplit: false,
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 })
 
 export default config
