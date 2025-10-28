@@ -7,6 +7,26 @@ import mdx from '@mdx-js/rollup'
 import remarkGfm from 'remark-gfm'
 import remarkFrontmatter from 'remark-frontmatter'
 import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin'
+import type { Plugin } from 'vite'
+
+// Plugin to prevent duplicate CSS injection
+const preventDuplicateCSS = (): Plugin => ({
+  name: 'prevent-duplicate-css',
+  enforce: 'post',
+  generateBundle(_options, bundle) {
+    // Find all CSS assets
+    const cssAssets = Object.entries(bundle).filter(
+      ([, asset]) => asset.type === 'asset' && asset.fileName.endsWith('.css')
+    )
+    
+    // If there are multiple CSS files, keep only the last one (most recent)
+    if (cssAssets.length > 1) {
+      cssAssets.slice(0, -1).forEach(([name]) => {
+        delete bundle[name]
+      })
+    }
+  },
+})
 
 const config = defineConfig({
   plugins: [
@@ -26,15 +46,23 @@ const config = defineConfig({
       remarkPlugins: [remarkGfm, remarkFrontmatter],
     }),
     viteReact(),
+    preventDuplicateCSS(),
   ],
   ssr: {
     external: ['@vercel/og', 'satori', 'yoga-wasm-web'],
+    noExternal: true,
   },
   build: {
     cssCodeSplit: false,
     rollupOptions: {
       output: {
         manualChunks: undefined,
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'styles.css') {
+            return 'assets/styles-[hash][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
       },
     },
   },
