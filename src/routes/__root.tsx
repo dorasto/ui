@@ -7,8 +7,8 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import appCss from "@/styles.css?url";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
-import appCss from "../styles.css?url";
 import { defaultSEO, seo } from "../utils/seo";
 
 interface MyRouterContext {
@@ -32,11 +32,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			}),
 		],
 		links: [
-			{
-				rel: "preload",
-				href: appCss,
-				as: "style",
-			},
 			{
 				rel: "stylesheet",
 				href: appCss,

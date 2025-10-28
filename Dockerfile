@@ -11,7 +11,7 @@ RUN bun install --frozen-lockfile
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN bun run build
+RUN bun registry:build && bun run build
 
 # Production stage - optimized
 FROM base AS runner
