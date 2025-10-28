@@ -50,7 +50,6 @@ const config = defineConfig({
   ],
   ssr: {
     external: ['@vercel/og', 'satori', 'yoga-wasm-web'],
-    noExternal: true,
   },
   build: {
     cssCodeSplit: false,
