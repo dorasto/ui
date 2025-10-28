@@ -11,18 +11,18 @@ import {
 	SidebarSubmenu,
 	SidebarSubmenuItem,
 } from "@@/registry/sidebar/sidebar";
-import { sidebarActions } from "@@/registry/sidebar/sidebar-store";
+import {
+	sidebarActions,
+	sidebarStore,
+} from "@@/registry/sidebar/sidebar-store";
 import {
 	IconBlocks,
 	IconBrandGithub,
 	IconChevronRight,
-	IconCode,
 	IconLayoutSidebar,
 	IconStack2,
 } from "@tabler/icons-react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ChevronDown, UserIcon } from "lucide-react";
-import path from "path";
 import * as React from "react";
 import {
 	Collapsible,
@@ -45,6 +45,9 @@ export function MainSidebar() {
 
 	// Initialize collapsible state based on route, but allow user to toggle freely
 	const [componentsOpen, setComponentsOpen] = React.useState(isBlocksActive);
+
+	// Access sidebar state directly from the store
+	const isSidebarOpen = sidebarStore.state.sidebars[sidebarId]?.open ?? true;
 
 	return (
 		<Sidebar id={sidebarId} collapsible variant="floating" className="">
@@ -84,7 +87,14 @@ export function MainSidebar() {
 							onOpenChange={setComponentsOpen}
 							className="flex flex-col gap-0.5"
 						>
-							<SidebarMenuItem isActive={pathname === "/blocks"}>
+							{/* Example: Change isActive based on sidebar state */}
+							<SidebarMenuItem
+								isActive={
+									isSidebarOpen
+										? pathname === "/blocks"
+										: pathname.startsWith("/blocks")
+								}
+							>
 								<Link to="/blocks" className="w-full">
 									<SidebarMenuButton
 										icon={<IconBlocks />}

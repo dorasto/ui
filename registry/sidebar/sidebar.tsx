@@ -436,7 +436,7 @@ export function SidebarSubmenu({
 	const trigger = (
 		<button
 			type="button"
-			onClick={() => !isCollapsed && setIsOpen(!isOpen)}
+			onClick={() => !isCollapsed && !forcePopup && setIsOpen(!isOpen)}
 			className={cn(
 				"flex w-full min-w-full items-center gap-3 text-inherit duration-150 transition-all justify-start text-left flex-1 rounded-lg p-2",
 				"hover:bg-accent hover:font-medium hover:text-accent-foreground",
@@ -461,7 +461,7 @@ export function SidebarSubmenu({
 
 	if (forcePopup) {
 		return (
-			<Popover>
+			<Popover open={isOpen} onOpenChange={setIsOpen}>
                 {isCollapsed ? (
                     <Tooltip>
 				<TooltipTrigger asChild><PopoverTrigger asChild>

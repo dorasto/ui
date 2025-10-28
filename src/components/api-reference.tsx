@@ -51,7 +51,7 @@ export function ApiReference({
 						{props.map((prop) => (
 							<TableRow key={prop.name} className="w-fit bg-popover">
 								<TableCell className="flex items-center gap-3 w-fit">
-									<code className="bg-primary/50 p-1 rounded text-base w-fit">
+									<code className="bg-primary/50 p-1 rounded  w-fit">
 										{prop.name}
 										{prop.required && <span>*</span>}
 									</code>
@@ -60,20 +60,20 @@ export function ApiReference({
 											<TooltipTrigger>
 												<IconInfoCircle className="size-4" />
 											</TooltipTrigger>
-											<TooltipContent className="text-base border">
+											<TooltipContent className="border">
 												{prop.description}
 											</TooltipContent>
 										</Tooltip>
 									)}
 								</TableCell>
 								<TableCell className="w-fit">
-									<code className="bg-accent p-1 rounded text-base w-fit">
+									<code className="bg-accent p-1 rounded  w-fit">
 										{prop.type}
 									</code>
 								</TableCell>
 								<TableCell className="w-fit">
 									{prop.defaultValue ? (
-										<code className="bg-accent p-1 rounded text-base w-fit">
+										<code className="bg-accent p-1 rounded  w-fit">
 											{prop.defaultValue}
 										</code>
 									) : (

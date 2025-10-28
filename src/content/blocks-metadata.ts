@@ -64,6 +64,11 @@ export const blocksMetadata: BlockMetadata[] = [
 				description:
 					"You can use your own button as a child component for more control and styling abilities",
 			},
+			{
+				id: "clipboard-03",
+				name: "Simple",
+				description: "The raw component",
+			},
 		],
 		props: [
 			{
