@@ -1,0 +1,1 @@
+- If you're creating a Tanstack Start/Router route, you must create the file first with a touch command, as auto generated content is populated and the file gets currupted. So touch the file, then read it and update it.
