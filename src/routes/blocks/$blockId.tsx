@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import type { ImperativePanelGroupHandle } from "react-resizable-panels";
 import { ApiReference } from "@/components/api-reference";
 import BunIcon from "@/components/icons/bun";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CodeBlock } from "@/components/ui/code-block";
 import { Label } from "@/components/ui/label";
@@ -147,7 +148,7 @@ function BlockPage() {
 			</div>
 			<div className="flex flex-col gap-12">
 				{/* Title Section */}
-				<div className="flex items-start justify-between">
+				<div className="flex flex-col gap-4">
 					<div className="flex flex-col gap-0">
 						<Label className="text-3xl font-bold">{block.name}</Label>
 						{block.description && (
@@ -156,6 +157,27 @@ function BlockPage() {
 							</Label>
 						)}
 					</div>
+					{block.inspired && block.inspired.length > 0 && (
+						<div className="flex flex-col gap-2">
+							<Label className="text-sm font-semibold">Inspired by:</Label>
+							{block.inspired.map((item, index) => (
+								<a
+									className="flex items-center gap-1"
+									key={`${item.name}-${index}`}
+									href={item.url}
+								>
+									<Badge variant={"secondary"}>
+										<img
+											src={item.pic}
+											alt={item.name}
+											className="h-4 w-4 rounded-full"
+										/>
+										<Label className="font-semibold text-xs">{item.name}</Label>
+									</Badge>
+								</a>
+							))}
+						</div>
+					)}
 				</div>
 
 				{/* First Example */}

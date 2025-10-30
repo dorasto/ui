@@ -1,4 +1,4 @@
-import { IconCopy, IconExternalLink } from "@tabler/icons-react";
+import { IconCopy, IconExternalLink, IconSection } from "@tabler/icons-react";
 
 export const categoryIds = {
 	General: "general",
@@ -34,13 +34,13 @@ export interface BlockMetadata {
 	/** Optional: API props documentation */
 	props?: PropDefinition[];
 	preview?: boolean;
+	inspired?: Array<{ name: string; url: string; pic?: string }>;
 }
 
 export const blocksMetadata: BlockMetadata[] = [
 	{
 		id: "clipboard",
 		category: categoryIds.General,
-
 		name: "Clipboard",
 		description:
 			"Copy to clipboard components with various styles and interactions.",
@@ -161,6 +161,61 @@ export const blocksMetadata: BlockMetadata[] = [
 		],
 	},
 	{
+		id: "tile",
+		category: categoryIds.General,
+
+		name: "Tile",
+		description:
+			"Flexible tile components for displaying content. Similar to the shadcn/ui item component, but my custom implementation prior to the release of that, but refactored to be similar.",
+		image: "/components/tile.png",
+		icon: IconSection,
+		hasDocs: true,
+		examples: [
+			{
+				id: "tile-01",
+				name: "Example",
+				description: "Showcase the base function",
+			},
+			{
+				id: "tile-02",
+				name: "Use as a link",
+				description:
+					"By using asChild, you can use the tile as a link or any other component",
+			},
+			{
+				id: "tile-03",
+				name: "Outline",
+				description:
+					"Using the outline variant that uses React Context to style children",
+			},
+			{
+				id: "tile-04",
+				name: "Transparent",
+				description:
+					"Similar to outline, but with a transparent background for use on cards or colored backgrounds",
+			},
+		],
+		props: [
+			{
+				name: "variant",
+				type: '"default" | "outline" | "transparent"',
+				defaultValue: '"default"',
+				description: "The visual style variant of the tile.",
+			},
+			{
+				name: "asChild",
+				type: "boolean",
+				defaultValue: "false",
+				description: "Render as a child component using Radix Slot.",
+			},
+			{
+				name: "className",
+				type: "string",
+				description: "Additional CSS classes for the tile.",
+			},
+		],
+	},
+	{
 		id: "preview",
 		category: categoryIds.General,
 		name: "URL Preview",
@@ -169,6 +224,13 @@ export const blocksMetadata: BlockMetadata[] = [
 		image: "/components/preview.png",
 		icon: IconExternalLink,
 		hasDocs: true,
+		inspired: [
+			{
+				name: "Kibo UI",
+				url: "https://www.kibo-ui.com/components/glimpse",
+				pic: "https://www.kibo-ui.com/icon.png?icon.0423e3ed.png",
+			},
+		],
 		examples: [
 			{
 				id: "preview-01",

@@ -1,0 +1,25 @@
+import { CodeBlock } from "/src/components/ui/code-block.tsx"
+import { Label } from "/src/components/ui/label.tsx"
+
+# Features
+
+- ✅ Flexible composition with multiple sub-components
+- ✅ Multiple variants (default, outline, transparent)
+- ✅ React Context for automatic child styling
+- ✅ Support for asChild pattern using Radix Slot
+- ✅ Responsive design with mobile-friendly layouts
+
+# Usage
+<CodeBlock className="bg-card!" code={`<Tile variant="default">
+  <TileHeader>
+    <TileIcon>
+      <Icon />
+    </TileIcon>
+    <TileTitle>Title</TileTitle>
+    <TileDescription>Description text</TileDescription>
+  </TileHeader>
+  <TileAction>
+    <Button>Action</Button>
+  </TileAction>
+</Tile>`} />
+

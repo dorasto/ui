@@ -121,7 +121,7 @@ export function MainSidebar() {
 									</CollapsibleTrigger>
 								</SidebarMenuSub>
 							</SidebarMenuItem>
-							<CollapsibleContent className="">
+							<CollapsibleContent className="flex flex-col gap-0.5">
 								{blocksMetadata
 									.filter((block) => !block.preview)
 									.map((block) => {

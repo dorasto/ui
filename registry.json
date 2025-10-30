@@ -40,6 +40,25 @@
             "target": "components/doras-ui/preview.tsx"
         }
     ]
+  },
+  {
+    "name": "tile",
+    "type": "registry:block",
+    "title": "Tile",
+    "author": "Tommy Lundy <tommerty@doras.to>",
+    "description": "Flexible tile components for displaying content with multiple variants",
+      "categories": ["general"],
+      "dependencies": [
+    "@radix-ui/react-slot",
+    "class-variance-authority"
+      ],
+    "files": [
+        {
+            "path": "registry/tile/tile.tsx",
+            "type": "registry:component",
+            "target": "components/doras-ui/tile.tsx"
+        }
+    ]
   }
   ]
 }
