@@ -6,6 +6,7 @@ export interface SidebarState {
 	variant: "default" | "floating" | "inset";
 	side: "left" | "right";
 	keyboardShortcut?: string;
+	activeItem?: string;
 }
 
 export interface SidebarStoreState {
@@ -178,6 +179,21 @@ export const sidebarActions = {
 					[id]: { ...sidebar, keyboardShortcut: shortcut },
 				},
 				keyboardShortcuts: newKeyboardShortcuts,
+			};
+		});
+	},
+
+	setActiveItem: (id: string, item: string) => {
+		sidebarStore.setState((state) => {
+			const sidebar = state.sidebars[id];
+			if (!sidebar) return state;
+
+			return {
+				sidebars: {
+					...state.sidebars,
+					[id]: { ...sidebar, activeItem: item },
+				},
+				keyboardShortcuts: state.keyboardShortcuts,
 			};
 		});
 	},

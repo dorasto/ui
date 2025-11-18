@@ -59,6 +59,40 @@
             "target": "components/doras-ui/tile.tsx"
         }
     ]
+  },
+    {
+    "name": "sidebar",
+    "type": "registry:block",
+    "title": "Sidebar",
+    "author": "Tommy Lundy <tommerty@doras.to>",
+    "description": "Advanced sidebar component that's collapsible, nestable, and built on store",
+      "categories": ["general"],
+      "dependencies": [
+    "@tanstack/react-store",
+    "class-variance-authority",
+    "@tabler/icons-react"
+      ],
+            "registryDependencies": [
+    "button",
+    "sheet",
+    "tooltip",
+    "popover"
+      ],
+    "files": [
+        {
+            "path": "registry/sidebar/sidebar.tsx",
+            "type": "registry:component",
+            "target": "components/doras-ui/sidebar.tsx"
+        },
+        {
+            "path": "registry/sidebar/sidebar-store.ts",
+            "type": "registry:lib"
+        },
+        {
+            "path": "registry/sidebar/sidebar-script.tsx",
+            "type": "registry:lib"
+        }
+    ]
   }
   ]
 }

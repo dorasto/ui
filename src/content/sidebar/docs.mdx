@@ -1,0 +1,77 @@
+import { CodeBlock } from "/src/components/ui/code-block.tsx"
+
+# Features
+
+- ✅ **Persistent State**: Sidebar state (open/collapsed) is saved to localStorage to prevent FOUC (Flash of Unstyled Content).
+- ✅ **Dynamic Placement**: Can be placed on the left or right side of the screen.
+- ✅ **Keyboard Shortcuts**: Built-in support for keyboard shortcuts (e.g., `Cmd+B`) to toggle visibility.
+- ✅ **Mobile Responsive**: Automatically transforms into a drawer/sheet on mobile devices.
+- ✅ **Composable**: Built with small, composable components for maximum flexibility.
+- ✅ **Zero-Runtime CSS**: Uses CSS variables for width transitions, ensuring high performance.
+
+# Usage
+
+## Basic Setup
+
+First, add the `SidebarScript` to your root layout (e.g., `__root.tsx` or `index.html`) to enable persistent state without flickering.
+
+<CodeBlock className="bg-card!" code={`// In your root layout
+export default function RootLayout() {
+  return (
+    <html>
+      <head>
+        <SidebarScript />
+      </head>
+      <body>
+        {/* App content */}
+      </body>
+    </html>
+  );
+}`} />
+
+## Component Usage
+
+<CodeBlock className="bg-card!" code={`export function AppSidebar() {
+  return (
+    <Sidebar id="main-sidebar" collapsible keyboardShortcut="b">
+      <SidebarHeader>
+        <SidebarMenuItem>
+          <SidebarMenuButton>My App</SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton>Dashboard</SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarContent>
+    </Sidebar>
+  );
+}`} />
+
+## Triggering from Anywhere
+
+You can control the sidebar from anywhere in your application using the `SidebarTrigger` component or the `sidebarActions` API.
+
+<CodeBlock className="bg-card!" code={`// Using the component
+<SidebarTrigger sidebarId="main-sidebar" />
+
+// Using the API
+<button onClick={() => sidebarActions.toggleSidebar("main-sidebar")}>
+  Toggle Sidebar
+</button>`} />
+
+## Advanced Layouts
+
+You can create complex layouts with multiple sidebars by using the `isCollapsed` prop to force a sidebar to stay collapsed, or by using the `rootClassName` prop to adjust positioning.
+
+<CodeBlock className="bg-card!" code={`<Sidebar 
+  id="secondary-sidebar" 
+  isCollapsed={true} 
+  rootClassName="ml-0"
+>
+  {/* Content */}
+</Sidebar>`} />
+
+

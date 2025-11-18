@@ -1,4 +1,9 @@
-import { IconCopy, IconExternalLink, IconSection } from "@tabler/icons-react";
+import {
+	IconCopy,
+	IconExternalLink,
+	IconLayoutSidebar,
+	IconSection,
+} from "@tabler/icons-react";
 
 export const categoryIds = {
 	General: "general",
@@ -298,6 +303,105 @@ export const blocksMetadata: BlockMetadata[] = [
 				name: "onError",
 				type: "(error: Error) => void",
 				description: "Callback function called when metadata fetching fails.",
+			},
+		],
+	},
+	{
+		id: "sidebar",
+		category: categoryIds.General,
+		name: "Sidebar",
+		description:
+			"A composable, collapsible, and persistent sidebar component with keyboard shortcuts and mobile support.",
+		image: "/components/sidebar.png",
+		icon: IconLayoutSidebar,
+		hasDocs: true,
+		examples: [
+			{
+				id: "sidebar-01",
+				name: "Main Sidebar",
+				description:
+					"The main sidebar used in this documentation, featuring collapsible groups, active states, and mobile responsiveness.",
+				iframeHeight: "800px",
+			},
+			{
+				id: "sidebar-02",
+				name: "Right Sidebar",
+				description: "A sidebar positioned on the right side of the screen.",
+				iframeHeight: "600px",
+			},
+			{
+				id: "sidebar-03",
+				name: "Multiple sidebars",
+				description:
+					"Modify and manage multiple sidebars without layout or overflow problems. Pass classNames to style individually including setting widths and heights, and manage what appears on one sidebar depending on the other easily",
+				iframeHeight: "600px",
+			},
+		],
+		props: [
+			{
+				name: "id",
+				type: "string",
+				description: "Unique identifier for the sidebar state persistence.",
+				required: true,
+			},
+			{
+				name: "side",
+				type: '"left" | "right"',
+				defaultValue: '"left"',
+				description: "Which side of the screen the sidebar appears on.",
+			},
+			{
+				name: "variant",
+				type: '"default" | "floating"',
+				defaultValue: '"default"',
+				description: "Visual style variant.",
+			},
+			{
+				name: "collapsible",
+				type: "boolean",
+				defaultValue: "true",
+				description: "Whether the sidebar can be collapsed.",
+			},
+			{
+				name: "defaultOpen",
+				type: "boolean",
+				defaultValue: "true",
+				description: "Initial open state.",
+			},
+			{
+				name: "width",
+				type: "string",
+				defaultValue: '"16rem"',
+				description: "Expanded width.",
+			},
+			{
+				name: "collapsedWidth",
+				type: "string",
+				defaultValue: '"3.5rem"',
+				description: "Collapsed width.",
+			},
+			{
+				name: "keyboardShortcut",
+				type: "string",
+				description:
+					"Keyboard shortcut to toggle the sidebar (e.g. 'b' for Cmd+B).",
+			},
+			{
+				name: "className",
+				type: "string",
+				description: "Additional CSS classes for the sidebar container.",
+			},
+			{
+				name: "rootClassName",
+				type: "string",
+				description:
+					"Additional CSS classes for the root wrapper element (useful for margins/positioning).",
+			},
+			{
+				name: "isCollapsed",
+				type: "boolean",
+				description:
+					"Forces the sidebar to be in a collapsed state, overriding the internal state.",
 			},
 		],
 	},

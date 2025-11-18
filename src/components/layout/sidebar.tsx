@@ -21,6 +21,7 @@ import {
 	IconChevronRight,
 	IconLayoutSidebar,
 	IconStack2,
+	IconX,
 } from "@tabler/icons-react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import * as React from "react";
@@ -68,14 +69,29 @@ export function MainSidebar() {
 							Doras UI
 						</SidebarMenuButton>
 					</Link>
-					<SidebarMenuSub>
-						<SidebarMenuButton
-							icon={<IconLayoutSidebar />}
-							className="hover:bg-muted! aspect-square"
-							tooltip="Expand"
-							onClick={() => sidebarActions.toggleSidebar(sidebarId, isMobile)}
-						/>
-					</SidebarMenuSub>
+					{isMobile ? (
+						<SidebarMenuSub>
+							<SidebarMenuButton
+								icon={<IconX />}
+								className="hover:bg-muted! aspect-square"
+								tooltip="Expand"
+								onClick={() =>
+									sidebarActions.toggleSidebar(sidebarId, isMobile)
+								}
+							/>
+						</SidebarMenuSub>
+					) : (
+						<SidebarMenuSub>
+							<SidebarMenuButton
+								icon={<IconLayoutSidebar />}
+								className="hover:bg-muted! aspect-square"
+								tooltip="Expand"
+								onClick={() =>
+									sidebarActions.toggleSidebar(sidebarId, isMobile)
+								}
+							/>
+						</SidebarMenuSub>
+					)}
 				</SidebarMenuItem>
 				<SidebarMenuItem showWhenCollapsed>
 					<SidebarMenuButton

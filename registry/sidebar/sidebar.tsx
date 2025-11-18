@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useStore } from "@tanstack/react-store";
-import { PanelLeftIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,27 +23,23 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { sidebarStore, sidebarActions } from "./sidebar-store";
-import { IconChevronRight } from "@tabler/icons-react";
+import { IconChevronRight, IconLayoutSidebar } from "@tabler/icons-react";
 
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_COLLAPSED = "3.5rem";
 
 // Context for sidebar ID
-const SidebarContext = React.createContext<string | null>(null);
-
-// Hook to get sidebar ID from context
-function useSidebarId() {
-	const id = React.useContext(SidebarContext);
-	if (!id) {
-		throw new Error("Sidebar components must be used within a Sidebar component");
-	}
-	return id;
+interface SidebarContextProps {
+	id: string;
+	isCollapsed?: boolean;
 }
+const SidebarContext = React.createContext<SidebarContextProps | null>(null);
 
 // Hook to use sidebar
 export function useSidebar(id?: string) {
-	const contextId = React.useContext(SidebarContext);
-	const sidebarId = id ?? contextId;
+	const context = React.useContext(SidebarContext);
+	const sidebarId = id ?? context?.id;
+	const isCollapsed = context?.isCollapsed;
 	
 	if (!sidebarId) {
 		throw new Error("useSidebar must be called with an id or within a Sidebar component");
@@ -52,8 +47,15 @@ export function useSidebar(id?: string) {
 	
 	const sidebar = useStore(sidebarStore, (state) => state.sidebars[sidebarId]);
 
+	const effectiveSidebar = React.useMemo(() => {
+		if (isCollapsed && sidebar) {
+			return { ...sidebar, open: false, openMobile: false };
+		}
+		return sidebar;
+	}, [sidebar, isCollapsed]);
+
 	return {
-		sidebar,
+		sidebar: effectiveSidebar,
 		toggle: (isMobile = false) => sidebarActions.toggleSidebar(sidebarId, isMobile),
 		setOpen: (open: boolean, isMobile = false) =>
 			sidebarActions.setOpen(sidebarId, open, isMobile),
@@ -72,6 +74,8 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 	width?: string;
 	collapsedWidth?: string;
 	keyboardShortcut?: string;
+    rootClassName?: string;
+    isCollapsed?: boolean;
 }
 
 export function Sidebar({
@@ -84,6 +88,8 @@ export function Sidebar({
 	collapsedWidth = SIDEBAR_WIDTH_COLLAPSED,
 	keyboardShortcut,
 	className,
+    rootClassName,
+    isCollapsed,
 	children,
 	...props
 }: SidebarProps) {
@@ -165,13 +171,13 @@ export function Sidebar({
 	}, []);
 
 	// Use sidebar state if available, otherwise defaultOpen
-	const isOpen = sidebar ? (isMobile ? sidebar.openMobile : sidebar.open) : defaultOpen;
+	const isOpen = isCollapsed ? false : (sidebar ? (isMobile ? sidebar.openMobile : sidebar.open) : defaultOpen);
 	const currentWidth = isOpen ? width : collapsedWidth;
 
 	// Mobile: show Sheet
 	if (isMobile) {
 		return (
-			<SidebarContext.Provider value={id}>
+			<SidebarContext.Provider value={{ id, isCollapsed }}>
 				<Sheet
 					open={sidebar ? sidebar.openMobile : false}
 					onOpenChange={(open) => sidebarActions.setOpen(id, open, true)}
@@ -190,7 +196,7 @@ export function Sidebar({
 
 	const baseStyles = "sticky top-0 h-full overflow-hidden transition-all";
     	const variantRootStyles = {
-		default: "h-full",
+		default: "",
 		floating: "m-3",
 	};
 	const variantStyles = {
@@ -202,21 +208,21 @@ export function Sidebar({
 	// This prevents hydration mismatch because server doesn't know localStorage state
 	if (!isClient) {
 		return (
-            <div className={cn(variantRootStyles[variant])}>
+            <div className={cn(variantRootStyles[variant], rootClassName)}>
 			<aside
 				data-sidebar-id={id}
 				data-variant={variant}
 				data-side={side}
 				style={{ 
-					width: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})`,
-					minWidth: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})`,
-					maxWidth: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})`
+					width: `var(--sidebar-${id}-width, ${isCollapsed ? collapsedWidth : (defaultOpen ? width : collapsedWidth)})`,
+					minWidth: `var(--sidebar-${id}-width, ${isCollapsed ? collapsedWidth : (defaultOpen ? width : collapsedWidth)})`,
+					maxWidth: `var(--sidebar-${id}-width, ${isCollapsed ? collapsedWidth : (defaultOpen ? width : collapsedWidth)})`
 				}}
 				className={cn(baseStyles, variantStyles[variant], className, "")}
 				{...props}
 			>
 				{/* Skeleton - no content on server */}
-				<div className="flex h-full flex-col overflow-hidden" style={{ width: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})` }} >
+				<div className="flex h-full flex-col overflow-hidden" style={{ width: `var(--sidebar-${id}-width, ${isCollapsed ? collapsedWidth : (defaultOpen ? width : collapsedWidth)})` }} >
                    
                 </div>
 			</aside>
@@ -226,9 +232,9 @@ export function Sidebar({
 
 	// Client: render full sidebar with content
 	return (
-		<SidebarContext.Provider value={id}>
+		<SidebarContext.Provider value={{ id, isCollapsed }}>
 			<TooltipProvider delayDuration={0}>
-				<div className={cn(variantRootStyles[variant])}>
+				<div className={cn(variantRootStyles[variant], rootClassName)}>
 					<aside
 						data-sidebar-id={id}
 						data-state={isOpen ? "expanded" : "collapsed"}
@@ -546,10 +552,19 @@ export function SidebarSubmenuItem({
 
 // Sidebar Trigger
 export function SidebarTrigger({
+	sidebarId: propSidebarId,
 	className,
 	...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-	const sidebarId = useSidebarId();
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { sidebarId?: string }) {
+	const context = React.useContext(SidebarContext);
+	const sidebarId = propSidebarId ?? context?.id;
+
+	if (!sidebarId) {
+		throw new Error(
+			"SidebarTrigger must be used within a Sidebar component or passed a sidebarId prop",
+		);
+	}
+
 	const [isMobile, setIsMobile] = React.useState(false);
 
 	React.useEffect(() => {
@@ -569,7 +584,7 @@ export function SidebarTrigger({
 			onClick={() => sidebarActions.toggleSidebar(sidebarId, isMobile)}
 			{...props}
 		>
-			<PanelLeftIcon className="h-4 w-4" />
+			<IconLayoutSidebar className="h-4 w-4" />
 			<span className="sr-only">Toggle Sidebar</span>
 		</Button>
 	);
