@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useStore } from "@tanstack/react-store";
-import { ChevronDownIcon, PanelLeftIcon } from "lucide-react";
+import { PanelLeftIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +24,6 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { sidebarStore, sidebarActions } from "./sidebar-store";
-import { Skeleton } from "@/components/ui/skeleton";
 import { IconChevronRight } from "@tabler/icons-react";
 
 const SIDEBAR_WIDTH = "16rem";
@@ -103,7 +102,12 @@ export function Sidebar({
 	// Register sidebar on mount
 	React.useEffect(() => {
 		if (hasRegistered.current) return;
-		
+
+		const normalizedShortcut =
+			keyboardShortcut && keyboardShortcut.length === 1
+				? `mod+${keyboardShortcut}`
+				: keyboardShortcut;
+
 		const existing = sidebarStore.state.sidebars[id];
 		if (!existing) {
 			sidebarActions.registerSidebar(id, {
@@ -111,20 +115,39 @@ export function Sidebar({
 				variant,
 				side,
 				openMobile: false,
-				keyboardShortcut,
+				keyboardShortcut: normalizedShortcut,
 			});
-		} else if (keyboardShortcut !== existing.keyboardShortcut) {
+		} else if (normalizedShortcut !== existing.keyboardShortcut) {
 			// Update keyboard shortcut if changed
-			sidebarActions.setKeyboardShortcut(id, keyboardShortcut);
+			sidebarActions.setKeyboardShortcut(id, normalizedShortcut);
 		}
-		
+
 		hasRegistered.current = true;
-		
+
 		return () => {
 			hasRegistered.current = false;
 			sidebarActions.unregisterSidebar(id);
 		};
 	}, [id, defaultOpen, variant, side, keyboardShortcut]);
+
+	// Keyboard shortcut handler
+	React.useEffect(() => {
+		if (!keyboardShortcut) return;
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			// Only support mod+key for now
+			if (!event.metaKey && !event.ctrlKey) return;
+
+			const key = keyboardShortcut.replace(/mod\+/i, "").toLowerCase();
+			if (event.key.toLowerCase() === key) {
+				event.preventDefault();
+				sidebarActions.toggleSidebar(id);
+			}
+		};
+
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [id, keyboardShortcut]);
 
 	// Update CSS variable when sidebar state changes
 	React.useEffect(() => {
@@ -189,16 +212,12 @@ export function Sidebar({
 					minWidth: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})`,
 					maxWidth: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})`
 				}}
-				className={cn(baseStyles, variantStyles[variant], className, "animate-pulse border-transparent")}
+				className={cn(baseStyles, variantStyles[variant], className, "")}
 				{...props}
 			>
 				{/* Skeleton - no content on server */}
 				<div className="flex h-full flex-col overflow-hidden" style={{ width: `var(--sidebar-${id}-width, ${defaultOpen ? width : collapsedWidth})` }} >
-                    <div className="flex flex-col gap-0.5 p-2">
-                    <Skeleton className="w-full h-9 opacity-10"/>
-                     <Skeleton className="w-full h-9 opacity-10"/>
-                      <Skeleton className="w-full h-9 opacity-10"/>
-                    </div>
+                   
                 </div>
 			</aside>
             </div>

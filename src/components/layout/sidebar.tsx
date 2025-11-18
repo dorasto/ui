@@ -50,7 +50,13 @@ export function MainSidebar() {
 	const isSidebarOpen = sidebarStore.state.sidebars[sidebarId]?.open ?? true;
 
 	return (
-		<Sidebar id={sidebarId} collapsible variant="floating" className="">
+		<Sidebar
+			id={sidebarId}
+			collapsible
+			variant="floating"
+			className=""
+			keyboardShortcut="p"
+		>
 			<SidebarHeader>
 				<SidebarMenuItem>
 					<Link to="/" className="w-full">

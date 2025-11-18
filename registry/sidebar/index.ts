@@ -21,4 +21,4 @@ export { sidebarStore, sidebarActions } from "./sidebar-store";
 export type { SidebarState, SidebarStoreState } from "./sidebar-store";
 
 // Script for zero-flash loading and keyboard shortcuts
-export { SidebarScript, SidebarKeyboardHandler } from "./sidebar-script";
+export { SidebarScript } from "./sidebar-script";
